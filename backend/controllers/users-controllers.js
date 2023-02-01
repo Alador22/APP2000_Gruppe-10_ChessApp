@@ -50,6 +50,8 @@ const signup = async (req, res, next) => {
     email,
     image: "https://web01.usn.no/~lonnesta/Tor_Lonnestad.jpg",
     password,
+    elo: 1000,
+    admin: false,
   });
 
   try {
