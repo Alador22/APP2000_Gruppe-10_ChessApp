@@ -1,0 +1,7 @@
+{
+  "env": {
+    "DB_USER": "alador",
+    "DB_PASSWORD": "killer431",
+    "DB_NAME": "database"
+  }
+}

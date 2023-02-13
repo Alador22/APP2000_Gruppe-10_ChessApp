@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.6610a90d.css",
+    "main.js": "/static/js/main.1af1ee6b.js",
+    "static/media/Chess-Logo-Design.jpg": "/static/media/Chess-Logo-Design.95512f065239f49bebca.jpg",
+    "index.html": "/index.html",
+    "main.6610a90d.css.map": "/static/css/main.6610a90d.css.map",
+    "main.1af1ee6b.js.map": "/static/js/main.1af1ee6b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.6610a90d.css",
+    "static/js/main.1af1ee6b.js"
+  ]
+}
