@@ -10,7 +10,7 @@ function LoginForm() {
     event.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/login",
+        process.env.REACT_APP_BACKEND_URL + "/users/login",
         { email, password },
         {
           headers: {

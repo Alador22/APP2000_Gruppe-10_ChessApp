@@ -5,22 +5,14 @@ const mongoose = require("mongoose");
 const usersRoutes = require("./routes/users-routes");
 const HttpError = require("./models/http-error");
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 
 app.use(bodyParser.json());
 app.use(cors());
 
-/*app.post("/api/users/login", (req, res) => {
-  const { name, password } = req.body;
-  // Noe logikk inn her
-  if (name === "admin" && password === "password") {
-    res.send("Login successful");
-  } else {
-    res.status(401).send("Login failed");
-  }
-});*/
-app.use("/api/users", usersRoutes);
+app.use(express.static(path.join("public")));
 
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
@@ -29,6 +21,12 @@ app.use((req, res, next) => {
     "Origin, X-Requested-With, Content-Type, Accept"
   );
   next();
+});
+
+app.use("/api/users", usersRoutes);
+
+app.use((req, res, next) => {
+  res.sendFile(path.resolve(__dirname, "public", "index.html"));
 });
 
 app.use((req, res, next) => {
@@ -46,10 +44,10 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    "mongodb+srv://alador:killer431@cluster0.en1kinu.mongodb.net/database?retryWrites=true&w=majority"
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.en1kinu.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`
   )
   .then(() => {
-    app.listen(5000);
+    app.listen(process.env.PORT || 5000);
   })
   .catch((err) => {
     console.log(err);
