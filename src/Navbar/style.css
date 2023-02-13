@@ -1,13 +1,16 @@
-
+/* Navbar innhold, farge osv. */
 nav {
     display: flex;
+    font-family:Arial, Helvetica, sans-serif;
     justify-content: space-between;
     align-items: center;
-    background-color: #333;
+    background-color: #3d0a81;
     color: #fff;
     padding: 10px;
+    font-size: 25px;
   }
   
+  /* tekst vises horisontalt */
   nav ul {
     display: flex;
     list-style: none;
@@ -15,19 +18,24 @@ nav {
     padding: 0;
   }
   
+  /* spacing mellom navbar tekst */
   nav ul li {
     margin: 0 10px;
   }
   
+  /* tekst i navbar */
   nav ul li a {
     color: #fff;
     text-decoration: none;
   }
   
+  /* grå effekt over tekst i navbar */
   nav ul li a:hover {
     color: #ccc;
   }
 
-  .login-button {
-    display:flex; 
-  } 
+  /* grå effekt over login knapp med musepeker effekt */
+  nav button {
+    font-size: 20px;
+    cursor:pointer;
+  }

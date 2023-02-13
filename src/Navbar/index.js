@@ -16,7 +16,7 @@ function Navbar() {
           <Link to="/FindMatches">Find Matches</Link>
         </li>
       </ul>
-      <Link to="/loginPage"><button>Login</button></Link>
+      <Link to="/loginPage"><button>Log in</button></Link>
     </nav>
   );
 }

@@ -1,4 +1,4 @@
-/* Hele kontainern i senter, med bakgrunnsbilde og høyde.*/
+/* kontaineren med heste logo*/
 .container {
   display: flex;
   justify-content: center;
@@ -7,24 +7,26 @@
   background-image: url('./Chess-Logo-Design.jpg');
   background-size: cover;
   background-position: center -150px;
- 
 }
-/* Login-Form boksen, med skygge kant/bakgrunn/størrelse */
-.login-form {
+
+/* Login form */
+.form {
   width: 400px;
   padding: 20px;
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 10px;
   box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.75);
 }
-/* Navn og Passord Tekst*/
-.login-form label {
+
+/* Email, Passord tekst */
+.form label {
   font-size: 20px;
   font-weight: bold;
   margin-bottom: 10px;
 }
-/* Navn og Passord input */
-.login-form input {                                    
+
+/* Email, Passord input */
+.form input {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -34,8 +36,9 @@
   font-size: 18px;
   font-weight: bold;
 }
-/* Login Knappen */
-.login-form button {
+
+/* Login knapp */
+.login-btn {
   width: 100%;
   background-color: #09f510;
   color: white;
@@ -47,7 +50,64 @@
   margin: 8px 0;
   font-weight: bold;
 }
-/* Grønn Effekt over Login */
-.login-form button:hover {
+
+/* Grønn effekt over Login knapp */
+.login-btn:hover {
   background-color: #45a049;
 }
+
+/* Register knapp i register skjema */
+.register-btn {
+  font-size: 18px;
+  font-weight: bold;
+  color: #444;
+  background-color: #ddd;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 14px 20px;
+  margin: 8px 0;
+}
+
+/* Register knapp i login skjema */
+.register-btn-small {
+  font-size: 14px;
+  font-weight: bold;
+  color: #444;
+  background-color: #ddd;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 8px 16px;
+  margin-left: 8px;
+}
+/* Grå effekt over Register knapp i loginskjema */
+.register-btn-small:hover {
+  background-color: #a8a6a6;
+}
+
+/* Grå effekt over Register knapp i registerskjema */
+.register-btn:hover {
+  background-color: #a8a6a6;
+}
+
+/* Cancel knapp */
+.cancel-btn {
+  width: 100%;
+  background-color: #e60000;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  padding: 14px 20px;
+  font-size: 18px;
+  margin: 8px 0;
+  font-weight: bold;
+}
+
+/* Rød effekt over Cancel knapp */
+.cancel-btn:hover {
+  background-color: #ff3333;
+}
+
+
