@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./LoginForm.css";
 
+
+// Definerer tilstander login / registrering
 function LoginForm() {
-  // Definerer tilstander for innlogging
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
 
-  // Funksjon for å sende innloggingen
+   // Funksjon for å sende innloggingen
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -32,18 +34,14 @@ function LoginForm() {
   // Funksjon for å sende registreringen
   const handleRegisterSubmit = async (event) => {
     event.preventDefault();
-    if (!email || !password || !confirmPassword) {
+    if (!name || !email || !password) {
       setErrorMessage("Please fill in all fields");
-      return;
-    }
-    if (password !== confirmPassword) {
-      setErrorMessage("Passwords do not match");
       return;
     }
     try {
       const response = await axios.post(
         process.env.REACT_APP_BACKEND_URL + "/users/register",
-        { email, password },
+        { name, email, password },
         {
           headers: {
             "Content-Type": "application/json",
@@ -51,28 +49,43 @@ function LoginForm() {
         }
       );
       console.log(response.data);
-      alert("Registration successful! Please log in.");
+      setRegistrationSuccessful(true);
     } catch (error) {
       console.error(error);
     }
-  };
+  }; 
 
-  // Funksjon for å vise registreringsskjemaet
+// Funksjon for å vise registreringsskjemaet
   const handleRegisterClick = () => {
     setShowRegisterForm(true);
+    setRegistrationSuccessful(false);
     setErrorMessage("");
   };
-
-  // Funksjon for å avbryte registreringen
-  const handleCancelClick = () => {
+ // Funksjon for å avbryte registreringen
+  const handleBackToLoginClick = () => {
     setShowRegisterForm(false);
+    setRegistrationSuccessful(false);
     setErrorMessage("");
   };
 
-  // Returnerer det faktiske skjemaet med input-felt, knapper og validering
+// Returnerer det faktiske skjemaet med input-felt, knapper og validering
   return (
     <div className="container">
       <form className="form" onSubmit={showRegisterForm ? handleRegisterSubmit : handleLoginSubmit}>
+        {showRegisterForm && (
+          <div>
+            <label>
+              Name:
+              <input
+                type="text"
+                name="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </label>
+            <br />
+          </div>
+        )}
         <label>
           Email:
           <input
@@ -93,44 +106,38 @@ function LoginForm() {
           />
         </label>
         <br />
-        {showRegisterForm && (
+        {registrationSuccessful ? (
           <div>
-            <label>
-              Confirm Password:
-              <input
-                type="password"
-                name="confirm-password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </label>
-            <br />
+            <p>Registration successful! Go login.</p>
+            <button onClick={handleBackToLoginClick} className="register-btn-small">
+              Back to Login
+            </button>
+          </div>
+        ) : (
+          <div>
+            <button type="submit" className={showRegisterForm ? "cancel-btn" : "login-btn"}>
+              {showRegisterForm ? "Register now" : "Log In"}
+            </button>
+            {showRegisterForm ? (
+              <button onClick={handleBackToLoginClick} className="register-btn-small">
+                Back to Login
+              </button>
+            ) : (
+              <p>
+                Don't have an account?{" "}
+                <button onClick={handleRegisterClick} className="register-btn-small">
+                  Register here
+                </button>
+              </p>
+            )}
           </div>
         )}
-        <button type="submit" className={showRegisterForm ? "register-btn" : "login-btn"}>
-          {showRegisterForm ? "Register" : "Log In"}
-        </button>
         {errorMessage && (
           <p className="error-message">{errorMessage}</p>
-        )}
-        {!showRegisterForm && (
-          <p>
-            Don't have an account?{" "}
-            <button onClick={handleRegisterClick} className="register-btn-small">
-              Register Here
-            </button>
-          </p>
-        )}
-        {showRegisterForm && (
-          <div>
-            <button onClick={handleCancelClick} className="cancel-btn">
-              Cancel
-            </button>
-          </div>
-        )}
-      </form>
-    </div>
-  );
-}
-
-export default LoginForm;
+          )}
+          </form>
+        </div>
+      );
+    }
+    
+    export default LoginForm;
