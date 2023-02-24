@@ -3,6 +3,7 @@ const bcrypt = require("bcryptjs");
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
 
+//vi får alle brukerne på User collection uten deres passord
 const getUsers = async (req, res, next) => {
   let users;
   try {
@@ -17,6 +18,7 @@ const getUsers = async (req, res, next) => {
   res.json({ users: users.map((user) => user.toObject({ getters: true })) });
 };
 
+//koden som kjøres for å opprette en bruker på databasen
 const signup = async (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -25,7 +27,7 @@ const signup = async (req, res, next) => {
     );
   }
   const { name, email, password } = req.body;
-
+  //sjekker om brukeren finnes allerede i databasen
   let existingUser;
   try {
     existingUser = await User.findOne({ email: email });
@@ -45,6 +47,8 @@ const signup = async (req, res, next) => {
     return next(error);
   }
   /*
+  //passordet er saltet og hashet før det sendes til databasen
+
   let hashedPassword;
   try {
     hashedPassword = await bcrypt.hash(password, 12);
@@ -56,6 +60,7 @@ const signup = async (req, res, next) => {
     return next(error);
   }
 */
+  //denne strukturen sendes som et json format til databasen slik at brukeren kan lagres
   const createdUser = new User({
     name,
     email,
@@ -74,12 +79,13 @@ const signup = async (req, res, next) => {
 
   res.status(201).json({ user: createdUser.toObject({ getters: true }) });
 };
+
 /*
 const login = async (req, res, next) => {
   const { email, password } = req.body;
 
+//sjekker om brukeren finnes i databasen
   let existingUser;
-
   try {
     existingUser = await User.findOne({ email: email });
   } catch (err) {
@@ -97,7 +103,7 @@ const login = async (req, res, next) => {
     );
     return next(error);
   }
-
+//vi bruker bcrypt-biblioteket for å sjekke om passordet som er gitt samsvarer med den hashed passordet som er lagret i databasen
   let isValidPassword = false;
   try {
     isValidPassword = await bcrypt.compare(password, existingUser.password);
@@ -117,11 +123,11 @@ const login = async (req, res, next) => {
   res.json({ message: "Logged in!" });
 };
 */
+//funksjonen for å logge inn
 const login = async (req, res, next) => {
   const { email, password } = req.body;
-
+  //sjekker om brukeren finnes i databasen
   let existingUser;
-
   try {
     existingUser = await User.findOne({ email: email });
   } catch (err) {
@@ -131,7 +137,7 @@ const login = async (req, res, next) => {
     );
     return next(error);
   }
-
+  //sjekker at passordet som er gitt samsvarer med passordet for brukeren
   if (!existingUser || existingUser.password !== password) {
     const error = new HttpError(
       "Invalid credentials, could not log you in.",
