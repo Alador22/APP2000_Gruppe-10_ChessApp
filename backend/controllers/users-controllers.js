@@ -46,12 +46,15 @@ const signup = async (req, res, next) => {
     );
     return next(error);
   }
-  /*
+
   //passordet er saltet og hashet før det sendes til databasen
 
   let hashedPassword;
+  console.log("Password before hashing:", password);
+
   try {
     hashedPassword = await bcrypt.hash(password, 12);
+    console.log("Hashed password:", hashedPassword);
   } catch (err) {
     const error = new HttpError(
       "Could not create user, please try again.",
@@ -59,13 +62,13 @@ const signup = async (req, res, next) => {
     );
     return next(error);
   }
-*/
+
   //denne strukturen sendes som et json format til databasen slik at brukeren kan lagres
   const createdUser = new User({
     name,
     email,
     image: "https://web01.usn.no/~lonnesta/Tor_Lonnestad.jpg",
-    password /*: hashedPassword*/,
+    password: hashedPassword,
     elo: 1000,
     admin: false,
   });
@@ -80,11 +83,10 @@ const signup = async (req, res, next) => {
   res.status(201).json({ user: createdUser.toObject({ getters: true }) });
 };
 
-/*
 const login = async (req, res, next) => {
   const { email, password } = req.body;
 
-//sjekker om brukeren finnes i databasen
+  //sjekker om brukeren finnes i databasen
   let existingUser;
   try {
     existingUser = await User.findOne({ email: email });
@@ -103,7 +105,7 @@ const login = async (req, res, next) => {
     );
     return next(error);
   }
-//vi bruker bcrypt-biblioteket for å sjekke om passordet som er gitt samsvarer med den hashed passordet som er lagret i databasen
+  //vi bruker bcrypt-biblioteket for å sjekke om passordet som er gitt samsvarer med den hashed passordet som er lagret i databasen
   let isValidPassword = false;
   try {
     isValidPassword = await bcrypt.compare(password, existingUser.password);
@@ -122,7 +124,7 @@ const login = async (req, res, next) => {
 
   res.json({ message: "Logged in!" });
 };
-*/
+/*
 //funksjonen for å logge inn
 const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -147,7 +149,7 @@ const login = async (req, res, next) => {
   }
 
   res.json({ message: "Logged in!" });
-};
+};*/
 exports.getUsers = getUsers;
 exports.signup = signup;
 exports.login = login;

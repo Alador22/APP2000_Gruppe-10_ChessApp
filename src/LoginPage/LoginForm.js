@@ -37,6 +37,10 @@ function LoginForm() {
       setErrorMessage("Please fill in all fields");
       return;
     }
+    if (typeof password !== "string") {
+      setErrorMessage("Password must be a string");
+      return;
+    }
     try {
       const response = await axios.post(
         process.env.REACT_APP_BACKEND_URL + "/users/signup",
