@@ -9,7 +9,7 @@ const userSchema = new Schema({
   password: { type: String, required: true, minlength: 6 },
   image: { type: String, required: true },
   elo: { type: Number },
-  admin: { Boolean },
+  admin: { type: Boolean },
 });
 
 userSchema.plugin(uniqueValidator);

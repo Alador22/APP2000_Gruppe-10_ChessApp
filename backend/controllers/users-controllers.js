@@ -50,11 +50,8 @@ const signup = async (req, res, next) => {
   //passordet er saltet og hashet før det sendes til databasen
 
   let hashedPassword;
-  console.log("Password before hashing:", password);
-
   try {
     hashedPassword = await bcrypt.hash(password, 12);
-    console.log("Hashed password:", hashedPassword);
   } catch (err) {
     const error = new HttpError(
       "Could not create user, please try again.",
@@ -124,32 +121,7 @@ const login = async (req, res, next) => {
 
   res.json({ message: "Logged in!" });
 };
-/*
-//funksjonen for å logge inn
-const login = async (req, res, next) => {
-  const { email, password } = req.body;
-  //sjekker om brukeren finnes i databasen
-  let existingUser;
-  try {
-    existingUser = await User.findOne({ email: email });
-  } catch (err) {
-    const error = new HttpError(
-      "Loggin in failed, please try again later.",
-      500
-    );
-    return next(error);
-  }
-  //sjekker at passordet som er gitt samsvarer med passordet for brukeren
-  if (!existingUser || existingUser.password !== password) {
-    const error = new HttpError(
-      "Invalid credentials, could not log you in.",
-      401
-    );
-    return next(error);
-  }
 
-  res.json({ message: "Logged in!" });
-};*/
 exports.getUsers = getUsers;
 exports.signup = signup;
 exports.login = login;
