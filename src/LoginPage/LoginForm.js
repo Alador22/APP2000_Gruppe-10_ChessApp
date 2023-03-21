@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./LoginForm.css";
+import { useNavigate } from "react-router-dom";
+
 
 // Definerer tilstander login / registrering
 function LoginForm() {
@@ -10,6 +12,9 @@ function LoginForm() {
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
+  const navigate = useNavigate();
+
+  
 
   // Funksjon for å sende innloggingen
   const handleLoginSubmit = async (event) => {
@@ -25,6 +30,7 @@ function LoginForm() {
         }
       );
       console.log(response.data);
+      navigate("HomePage"); // etter vellykket innlogging, så blir brukeren omderigert til HomePage.
     } catch (error) {
       console.error(error);
     }

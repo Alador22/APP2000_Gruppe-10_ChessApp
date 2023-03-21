@@ -8,15 +8,17 @@ import LoginForm from './LoginPage/LoginForm';
 
 
 
+
+
 function App() {
   return (
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="HomePage" element={<HomePage />} />
         <Route path="Practice" element={<Practice />} />
         <Route path="FindMatches" element={<FindMatches />} />
-        <Route path="LoginPage" element={<LoginForm />} />
+        <Route path="/" element={<LoginForm />} />
       </Routes>
     </Router>
   );

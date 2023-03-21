@@ -7,7 +7,7 @@ function Navbar() {
     <nav>
       <ul>
         <li>
-          <Link to="/">Home</Link>
+          <Link to="HomePage">Home</Link>
         </li>
         <li>
           <Link to="/Practice">Practice</Link>
@@ -16,7 +16,7 @@ function Navbar() {
           <Link to="/FindMatches">Find Matches</Link>
         </li>
       </ul>
-      <Link to="/loginPage"><button>Log in</button></Link>
+      <Link to="/"><button>Log in</button></Link>
     </nav>
   );
 }
