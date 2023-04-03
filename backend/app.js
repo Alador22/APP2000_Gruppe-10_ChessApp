@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
 const usersRoutes = require("./routes/users-routes");
+const openingsRoutes = require("./routes/openings-routes");
+
 const HttpError = require("./models/http-error");
 const cors = require("cors");
 const path = require("path");
@@ -24,6 +26,7 @@ app.use((req, res, next) => {
 });
 */
 app.use("/api/users", usersRoutes);
+app.use("/api/openings", openingsRoutes);
 
 //vi bruker Path bibliotek for å kjøre Public-filen som frontend
 app.use((req, res, next) => {
