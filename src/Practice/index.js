@@ -1,18 +1,27 @@
+import React, { useState } from 'react';
 import { Chessboard } from 'react-chessboard';
-import React from 'react';
 import './style2.css';
+import { Chess } from 'chess.js';
 
 const Practice = () => {
+  const [position, setPosition] = useState('start');
+  const [chess] = useState(new Chess());
+
+  const handleMove = ({ from, to }) => {
+    const move = chess.move({ from, to });
+
+    if (move !== null) {
+      setPosition(chess.fen());
+    }
+  };
+
   return (
-    <div>
-      <h1>Practice</h1>
-      <Chessboard position="start" onMove={handleMove} />
+    <div className="main-container">
+      <div className="chessboard-container">
+        <Chessboard position={position} onMove={handleMove} />
+      </div>
     </div>
   );
-};
-
-const handleMove = (from, to) => {
-  console.log(`Moving piece from ${from} to ${to}`);
 };
 
 export default Practice;

@@ -1,15 +1,30 @@
-.chessboard {
-    width: 100px;
-    height: 100px;
-    margin: 0 auto; /* center the chessboard horizontally */
-  }
+.main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Sjakkbordet kommer til venstre */
+  min-height: 100vh;
+  padding: 20px;
+}
 
-  .square {
-    width: 300px;
-    height: 300px;
-  }
+.chessboard-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 880px; /* Størrelse på bordet */
+  height: 880px; /* Høyde */
+}
 
-  .square img {
-    width: 40px;
-    height: 40px;
-  }
+.chessboard-container .chessboard {
+  width: 100%;
+  height: 100%;
+}
+
+.chessboard-container .chessboard .square {
+  width: 110px; /* Width på squeresa */
+  height: 110px; /* Høyde*/
+}
+
+.chessboard-container .chessboard .square img {
+  width: 82px; 
+  height: 82px; 
+}
