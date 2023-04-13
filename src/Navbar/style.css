@@ -4,10 +4,15 @@ nav {
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     justify-content: space-between;
     align-items: center;
-    background-color: #01011b;
+    background: linear-gradient(to bottom, #010202, #1183c0);
     color: #fff;
     padding: 10px;
     font-size: 25px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px 50px;
   }
   
   /* tekst vises horisontalt */
@@ -37,12 +42,16 @@ nav {
   /* Farge og diverse for login knapp */
   nav button {
   cursor: pointer; /* musepeker over knapp */
-  background-color: rgba(70, 130, 180, 0.5); /* Bakgrunn og transparency */
+  background-color: rgba(7, 40, 68, 0.5); /* Bakgrunn og transparency */
   border: 2px solid rgba(70, 130, 180, 0.5); /* Border farge og transparency */
   padding: 4px 8px; 
   color: #fff; 
   transition: background-color 0.3s, color 0.3s, border-color 0.3s; 
+  position: absolute;
+  right: 130px;
+  margin: -10px;
 }
+
 /* Hover effect for login knappen */ 
 nav button:hover {
   background-color: rgba(70, 130, 180, 0.8); /* Bakgrunn og reduserte transparency */
