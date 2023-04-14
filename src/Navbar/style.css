@@ -1,52 +1,52 @@
 /* Navbar innhold, farge osv. */
 nav {
-    display: flex;
-    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-    justify-content: space-between;
-    align-items: center;
-    background: linear-gradient(to bottom, #010202, #1183c0);
-    color: #fff;
-    padding: 10px;
-    font-size: 25px;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 20px 50px;
-  }
-  
-  /* tekst vises horisontalt */
-  nav ul {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  
-  /* spacing mellom navbar tekst */
-  nav ul li {
-    margin: 0 20px;
-  }
-  
-  /* tekst i navbar */
-  nav ul li a {
-    color: #fff;
-    text-decoration: none;
-  }
-  
-  /* grå effekt over tekst i navbar */
-  nav ul li a:hover {
-    color: #ccc;
-  }
+  display: flex;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to bottom, #010202, #1183c0);
+  color: #fff;
+  padding: 10px;
+  font-size: 25px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px 50px;
+}
 
-  /* Farge og diverse for login knapp */
-  nav button {
+/* tekst vises horisontalt */
+nav ul {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* spacing mellom navbar tekst */
+nav ul li {
+  margin: 0 20px;
+}
+
+/* tekst i navbar */
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+}
+
+/* grå effekt over tekst i navbar */
+nav ul li a:hover {
+  color: #be0f0f;
+}
+
+/* Farge og diverse for login knapp */
+nav button {
   cursor: pointer; /* musepeker over knapp */
   background-color: rgba(7, 40, 68, 0.5); /* Bakgrunn og transparency */
   border: 2px solid rgba(70, 130, 180, 0.5); /* Border farge og transparency */
   padding: 4px 8px; 
   color: #fff; 
-  transition: background-color 0.3s, color 0.3s, border-color 0.3s; 
+  transition: all 0.3s ease; /* Endret transition til all, som inkluderer farge og border-color */
   position: absolute;
   right: 130px;
   margin: -10px;
@@ -56,6 +56,6 @@ nav {
 nav button:hover {
   background-color: rgba(70, 130, 180, 0.8); /* Bakgrunn og reduserte transparency */
   border-color: rgba(70, 130, 180, 0.8); /* Border farge og transperancy */
-  color: #130129; /* Annen farge  */
+  color: #fff; /* Tekstfarge tilbake til hvit */
+  box-shadow: 0 0 10px rgba(70, 130, 180, 0.8); /* Legger til skyggeeffekt */
 }
-  
