@@ -1,11 +1,13 @@
 body {
   background: linear-gradient(to bottom, #000102, #010203);
 }
+
 .main-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  flex-wrap: wrap;
 }
 /* sjakkbordet */
 .chessboard-container {
@@ -13,16 +15,16 @@ body {
   height: 500px;
   margin: 0 auto;
   position: relative;
-  
 }
+
 /* start game knappen */
 .start-game-button {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: rgb(5, 14, 90); 
-  border: 2px solid rgba(1, 30, 54, 0.5); 
+  background-color: rgb(5, 14, 90);
+  border: 2px solid rgba(1, 30, 54, 0.5);
   color: #fff;
   padding: 15px 25px;
   border-radius: 5px;
@@ -32,8 +34,36 @@ body {
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.25);
   transition: all 0.3s ease;
 }
-
+/* hover effekt over knappen */
 .start-game-button:hover {
-  background-color: rgba(70, 130, 180, 0.8); /* Bakgrunn  */
-  border-color: rgba(70, 130, 180, 0.8); /* Border farge  */
+  background-color: rgba(70, 130, 180, 0.8);
+  border-color: rgba(70, 130, 180, 0.8);
+}
+/* Sjakktrekk listen */
+.move-list-container {
+  margin-left: 20px;
+  color: #fff;
+  font-size: 18px;
+  font-family: Arial, sans-serif;
+  background-color: rgba(30, 30, 30, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  max-width: 300px;
+  overflow-y: auto;
+  max-height: 500px; /* høyde for scrollen */
+  overflow-y: auto; /* Enabler en scroll som kommer opp om det er for mange */
+  padding-right: 10px; 
+}
+/* scrollen */
+
+.move-list-container::-webkit-scrollbar {
+  width: 8px;
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.move-list-container::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
 }

@@ -18,11 +18,19 @@ const Practice = () => {
 
   // Definerer et state for å vise eller skjule startknappen, som starter som sann
   const [showStartButton, setShowStartButton] = useState(true);
+  // moveHistory holder historikken til tidligere trekk i spillet
+  const [moveHistory, setMoveHistory] = useState([]);
+  // moveListVisible blir brukt til å bestemme om listen med trekk skal vises
+  const [moveListVisible, setMoveListVisible] = useState(false);
+  // moveList inneholder en liste over trekkene som er gjort i spillet
+  const [moveList, setMoveList] = useState([]);
 
   // Funksjon for å utføre et sjakkdrag
   const handleMove = ({ sourceSquare, targetSquare }) => {
     // Henter ut alle gyldige sjakkdrag fra den nåværende posisjonen
     const moves = chess.moves({ verbose: true });
+    const moveString = `${sourceSquare} → ${targetSquare}`;
+  setMoveList((prev) => [...prev, moveString]);
 
     // Velger det sjakkdraget som samsvarer med de to rutene som er valgt av spilleren
     const move = moves.find(m => m.from === sourceSquare && m.to === targetSquare);
@@ -31,17 +39,18 @@ const Practice = () => {
     if (move === undefined) {
       return;
     }
-
     // Utfører sjakkdraget og oppdaterer posisjonen til sjakkbrettet
     chess.move(move);
     setPosition(chess.fen());
-
+    // holder på trekkene
+    updateMoveHistory(move);
     // Setter forrige posisjon til nåværende posisjon
     setPrevPosition(position);
 
     // Nullstiller aktive ruter
     setActiveSquares([]);
   };
+  
 
   // Funksjon for å håndtere klikk på ruter på sjakkbrettet
   const handleSquareClick = square => {
@@ -67,11 +76,23 @@ const Practice = () => {
   const handleStartGame = () => {
     // Setter posisjonen til startposisjonen
     setPosition('start');
+    setMoveListVisible(true);
 
     // Skjuler startknappen
     setShowStartButton(false);
   };
-
+// Oppdaterer moveHistory state-variabelen ved hjelp av funksjonen setMoveHistory
+  const updateMoveHistory = (move) => {
+    setMoveHistory(prevMoveHistory => [...prevMoveHistory, move]);
+  };
+// Returnerer en liste med alle tidligere trekk som er lagret i moveHistory state-variabelen
+  const renderMoveList = () => {
+    return moveHistory.map((move, index) => (
+      <div key={index}>
+        {index + 1}. {move.color === 'w' ? 'White' : 'Black'}: {move.san}
+      </div>
+    ));
+  };
   return (
     // Her defineres hovedcontaineren som skal inneholde sjakkbrettet og knappen for å starte spillet
     <div className="main-container">
@@ -109,11 +130,23 @@ const Practice = () => {
                   [square]: { backgroundColor: 'rgba(255, 255, 0, 0.4)' }
                 }),
                 {}
-              )
-            }}
-          />
-        )}
-      </div>
+                )
+              }}
+              showNotation={true}
+              // Her defineres kontaineren for den hvite sjakklisten
+            />
+          )}
+        </div>
+        {moveListVisible && (
+        <div className="move-list-container">
+          {position && renderMoveList()}
+          <ul>
+            {moveList.map((move, index) => (
+              <li key={index}>{move}</li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   );
 };
