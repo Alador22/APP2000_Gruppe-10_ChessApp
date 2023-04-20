@@ -2,11 +2,13 @@ const { validationResult } = require("express-validator");
 const HttpError = require("../models/http-error");
 const Opening = require("../models/opening");
 
-// Get all openings
+// Get all openings by creator
 const getOpenings = async (req, res, next) => {
+  const creatorId = req.params.creatorId;
   let openings;
   try {
-    openings = await Opening.find({});
+    openings = await Opening.find({ creator_id: creatorId });
+    //openings = await Opening.find({});
   } catch (err) {
     const error = new HttpError(
       "Fetching openings failed, please try again later.",
@@ -19,7 +21,7 @@ const getOpenings = async (req, res, next) => {
 
 // Create a new opening
 const createOpening = async (req, res, next) => {
-  const { name, moves, description } = req.body;
+  const { name, moves, description, creator_id } = req.body;
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -52,6 +54,7 @@ const createOpening = async (req, res, next) => {
     name,
     moves,
     description,
+    creator_id,
   });
 
   try {
@@ -63,14 +66,20 @@ const createOpening = async (req, res, next) => {
     );
     return next(error);
   }
-
-  res.status(201).json({ opening: createdOpening.toObject() });
+  res.status(201).json({ opening: createdOpening.toObject({ getters: true }) });
 };
 
 // Update an existing opening by its _id
 const updateOpening = async (req, res, next) => {
   const { name, moves, description } = req.body;
   const openingId = req.params.oid;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(
+      new HttpError("Invalid inputs passed, please check your data.", 422)
+    );
+  }
 
   let opening;
   try {
