@@ -16,7 +16,7 @@ const getGames = async (req, res, next) => {
   }
   res.json({ games: games.map((game) => game.toObject({ getters: true })) });
 };
-// add a get all games by user_id
+//get all games by user_id
 
 // Start a new game
 const startGame = async (req, res, next) => {
