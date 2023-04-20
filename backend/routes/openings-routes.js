@@ -5,7 +5,7 @@ const openingsController = require("../controllers/openings-controllers");
 
 const router = express.Router();
 
-// Get all openings
+// Get all openings by creator id
 router.get("/:creatorId", openingsController.getOpenings);
 
 // Create a new opening
