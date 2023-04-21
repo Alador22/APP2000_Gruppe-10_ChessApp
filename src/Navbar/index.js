@@ -1,13 +1,22 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { AuthContext } from "../AuthContext";
 import './style.css';
 
 function Navbar() {
+  const { isLoggedIn, handleLogout } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogoutClick = () => {
+    handleLogout();
+    navigate("/");
+  };
+
   return (
     <nav>
       <ul>
         <li>
-          <Link to="HomePage">Home</Link>
+          <Link to="/">Home</Link>
         </li>
         <li>
           <Link to="/Practice">Practice</Link>
@@ -16,7 +25,7 @@ function Navbar() {
           <Link to="/FindMatches">Find Matches</Link>
         </li>
       </ul>
-      <Link to="/"><button>Log in</button></Link>
+      <button onClick={handleLogoutClick}>{isLoggedIn ? 'Logg ut' : 'Logg inn'}</button>
     </nav>
   );
 }
