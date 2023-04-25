@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 
 const usersRoutes = require("./routes/users-routes");
 const openingsRoutes = require("./routes/openings-routes");
+const gamesRoutes = require("./routes/games-routes");
 
 const HttpError = require("./models/http-error");
 const cors = require("cors");
@@ -15,7 +16,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.use(express.static(path.join("public")));
-/*
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -24,10 +25,10 @@ app.use((req, res, next) => {
   );
   next();
 });
-*/
+
 app.use("/api/users", usersRoutes);
 app.use("/api/openings", openingsRoutes);
-
+app.use("/api/games", gamesRoutes);
 //vi bruker Path bibliotek for å kjøre Public-filen som frontend
 app.use((req, res, next) => {
   res.sendFile(path.resolve(__dirname, "public", "index.html"));
