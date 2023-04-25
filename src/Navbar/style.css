@@ -1,10 +1,14 @@
-/* Navbar innhold, farge osv. */
+body {
+  margin: -50px;
+  box-sizing: border-box;
+}
+
 nav {
   display: flex;
-  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(to bottom, #010202, #1183c0);
+  background: linear-gradient(to bottom, #05250f, #020303);
   color: #fff;
   padding: 10px;
   font-size: 25px;
@@ -12,6 +16,7 @@ nav {
   top: 0;
   left: 0;
   width: 100%;
+  box-sizing: border-box;
   padding: 20px 50px;
 }
 
@@ -34,7 +39,7 @@ nav ul li a {
   text-decoration: none;
 }
 
-/* grå effekt over tekst i navbar */
+/* rød effekt over tekst i navbar */
 nav ul li a:hover {
   color: #be0f0f;
 }
@@ -48,7 +53,7 @@ nav button {
   color: #fff; 
   transition: all 0.3s ease; /* Endret transition til all, som inkluderer farge og border-color */
   position: absolute;
-  right: 130px;
+  right: 70px;
   margin: -10px;
 }
 

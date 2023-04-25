@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './style.css';
 
-function Navbar() {
+function Navbar({ isLoggedIn, setIsLoggedIn }) {
   return (
     <nav>
       <ul>
@@ -16,8 +16,18 @@ function Navbar() {
           <Link to="/FindMatches">Find Matches</Link>
         </li>
       </ul>
-      <Link to="/"><button>Log in</button></Link>
+      
+      <Link to="/"><button onClick={() => {
+      if (isLoggedIn) {
+        setIsLoggedIn(false);
+      }
+    }}
+  >
+    {isLoggedIn ? "Log Out" : "Log In"}
+  </button>
+</Link>
     </nav>
+    
   );
 }
 

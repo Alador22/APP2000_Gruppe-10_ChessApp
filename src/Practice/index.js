@@ -10,9 +10,6 @@ const Practice = () => {
   // Definerer et state for posisjonen til brikkene på sjakkbrettet, som starter som null
   const [position, setPosition] = useState(null);
 
-  // Definerer et state for forrige posisjon på sjakkbrettet, som starter som null
-  const [prevPosition, setPrevPosition] = useState(null);
-
   // Definerer et state for aktiverte ruter på sjakkbrettet, som starter som en tom liste
   const [activeSquares, setActiveSquares] = useState([]);
 
@@ -44,14 +41,11 @@ const Practice = () => {
     setPosition(chess.fen());
     // holder på trekkene
     updateMoveHistory(move);
-    // Setter forrige posisjon til nåværende posisjon
-    setPrevPosition(position);
 
     // Nullstiller aktive ruter
     setActiveSquares([]);
   };
   
-
   // Funksjon for å håndtere klikk på ruter på sjakkbrettet
   const handleSquareClick = square => {
     // Henter ut brikketypen som er plassert på ruten som er klikket på
@@ -95,6 +89,7 @@ const Practice = () => {
   };
   return (
     // Her defineres hovedcontaineren som skal inneholde sjakkbrettet og knappen for å starte spillet
+    <div className="practice-body">
     <div className="main-container">
       <div className="chessboard-container">
         {/* Hvis showStartButton er satt til true vises knappen for å starte spillet */}
@@ -112,7 +107,6 @@ const Practice = () => {
             onMouseOverSquare={handleSquareClick}
             onMouseOutSquare={() => setActiveSquares([])}
             onDragStart={({ sourceSquare }) => {
-              setPrevPosition(position);
               const piece = chess.get(sourceSquare);
               if (piece && piece.color !== chess.turn()) {
                 return false;
@@ -133,12 +127,12 @@ const Practice = () => {
                 )
               }}
               showNotation={true}
-              // Her defineres kontaineren for den hvite sjakklisten
+              // Her defineres kontaineren for sjakklisten
             />
           )}
-        </div>
         {moveListVisible && (
         <div className="move-list-container">
+          <h1 className="Sjakkliste">MoveList :</h1>
           {position && renderMoveList()}
           <ul>
             {moveList.map((move, index) => (
@@ -148,6 +142,9 @@ const Practice = () => {
         </div>
       )}
     </div>
+    </div>
+    </div>
+    
   );
 };
 

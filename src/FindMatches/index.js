@@ -1,7 +1,8 @@
 import React from 'react'
-
+import "./style.css";
 const FindMatches = () => {
   return (
+    <div className="FindMatches-body">
     <div>
       <h1>Find Matches</h1>
       <form>
@@ -22,6 +23,8 @@ const FindMatches = () => {
         </ul>
       </div>
     </div>
+    </div>
+  
   )
 }
 

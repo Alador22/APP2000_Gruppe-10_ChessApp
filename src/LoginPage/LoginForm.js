@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 
 // Definerer tilstander login / registrering
-function LoginForm() {
+function LoginForm({ onLogin }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -30,11 +30,13 @@ function LoginForm() {
         }
       );
       console.log(response.data);
+      onLogin(); // Oppdater innloggingsstatus til App-komponenten
       navigate("HomePage"); // etter vellykket innlogging, så blir brukeren omderigert til HomePage.
     } catch (error) {
       console.error(error);
     }
   };
+
 
   // Funksjon for å sende registreringen
   const handleRegisterSubmit = async (event) => {
@@ -161,5 +163,4 @@ function LoginForm() {
     </div>
   );
 }
-
 export default LoginForm;
