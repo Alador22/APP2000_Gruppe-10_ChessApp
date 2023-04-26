@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.f7b56167.css",
-    "main.js": "/static/js/main.6684ae1e.js",
+    "main.css": "/static/css/main.c2881e2c.css",
+    "main.js": "/static/js/main.56427454.js",
     "static/media/chess.jpg": "/static/media/chess.15914a7b7a523508ec2f.jpg",
     "static/media/Chess-Logo-Design.jpg": "/static/media/Chess-Logo-Design.95512f065239f49bebca.jpg",
     "index.html": "/index.html",
-    "main.f7b56167.css.map": "/static/css/main.f7b56167.css.map",
-    "main.6684ae1e.js.map": "/static/js/main.6684ae1e.js.map"
+    "main.c2881e2c.css.map": "/static/css/main.c2881e2c.css.map",
+    "main.56427454.js.map": "/static/js/main.56427454.js.map"
   },
   "entrypoints": [
-    "static/css/main.f7b56167.css",
-    "static/js/main.6684ae1e.js"
+    "static/css/main.c2881e2c.css",
+    "static/js/main.56427454.js"
   ]
 }
