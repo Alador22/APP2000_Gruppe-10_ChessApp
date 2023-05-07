@@ -5,10 +5,10 @@ const openingsController = require("../controllers/openings-controllers");
 
 const router = express.Router();
 
-// Get all openings by creator id
+//Route for å få alle åpninger etter creator ID
 router.get("/:creatorId", openingsController.getOpenings);
 
-// Create a new opening
+//Route for å lage en ny åpning
 router.post(
   "/save",
   [
@@ -19,9 +19,9 @@ router.post(
   ],
   openingsController.createOpening
 );
-// Update an existing opening by its _id
+//Route for å oppdatere en eksisterende åpning med navn
 router.patch(
-  "/:oid",
+  "/:name",
   [
     check("name").not().isEmpty(),
     check("moves").not().isEmpty(),
@@ -29,4 +29,11 @@ router.patch(
   ],
   openingsController.updateOpening
 );
+//Route for å slette en åpning
+router.delete(
+  "/delete",
+  check("name").not().isEmpty(),
+  openingsController.deleteOpening
+);
+
 module.exports = router;
