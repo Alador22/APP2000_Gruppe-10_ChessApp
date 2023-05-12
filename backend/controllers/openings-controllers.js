@@ -5,9 +5,13 @@ const Opening = require("../models/opening");
 // Får alle åpninger av brukeren
 const getOpenings = async (req, res, next) => {
   const creatorId = req.params.creatorId;
-  let openings;
+  let customOpenings;
+  let defaultOpenings;
   try {
-    openings = await Opening.find({ creator_id: creatorId });
+    defaultOpenings = await Opening.find({
+      creator_id: "645d420a5095688bc839c600", //creatorID til Admin konto som er brukt for å lagre defaultOpenings
+    });
+    customOpenings = await Opening.find({ creator_id: creatorId });
   } catch (err) {
     const error = new HttpError(
       "Henting av åpninger mislyktes, Prøv igjen senere.",
@@ -15,7 +19,15 @@ const getOpenings = async (req, res, next) => {
     );
     return next(error);
   }
-  res.json({ openings: openings.map((opening) => opening.toObject()) });
+  const response = {
+    defaultOpenings: defaultOpenings.map((defaultOpenings) =>
+      defaultOpenings.toObject()
+    ),
+    customOpenings: customOpenings.map((customOpenings) =>
+      customOpenings.toObject()
+    ),
+  };
+  res.json(response);
 };
 
 // Oppretter en ny åpning
@@ -56,7 +68,7 @@ const createOpening = async (req, res, next) => {
     description,
     creator_id,
   });
-
+  //add authorization to make sure that users can only save openings on their accounts*
   try {
     await Opening.create(createdOpening);
   } catch (err) {
@@ -99,6 +111,7 @@ const updateOpening = async (req, res, next) => {
   opening.name = name;
   opening.moves = moves;
   opening.description = description;
+  //add authorization to make sure that users can only update their openings*
   try {
     await Opening.create(opening);
   } catch (err) {
@@ -134,7 +147,7 @@ const deleteOpening = async (req, res, next) => {
     );
     return next(error);
   }
-
+  //add authorization to make sure that users can only delete their openings*
   try {
     deleteOpening = await Opening.deleteOne({ name: name });
   } catch (err) {

@@ -38,4 +38,12 @@ router.delete(
 );
 router.get("/logout", usersController.logOut);
 
+router.patch(
+  "/update",
+
+  check("email").normalizeEmail().isEmail(),
+
+  usersController.updateRole
+);
+
 module.exports = router;

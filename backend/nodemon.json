@@ -2,6 +2,8 @@
   "env": {
     "DB_USER": "alador",
     "DB_PASSWORD": "killer431",
-    "DB_NAME": "database"
+    "DB_NAME": "database",
+    "REFRESH_TOKEN_SECRET": "",
+    "ACCESS_TOKEN_SECRET": ""
   }
 }

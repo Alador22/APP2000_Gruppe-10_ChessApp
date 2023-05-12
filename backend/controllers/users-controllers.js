@@ -47,8 +47,9 @@ const signup = async (req, res, next) => {
   //passordet er saltet og hashet før det sendes til databasen
 
   let hashedPassword;
+  const rounds = 12;
   try {
-    hashedPassword = await bcrypt.hash(password, 12);
+    hashedPassword = await bcrypt.hash(password, rounds);
   } catch (err) {
     const error = new HttpError("Kunne ikke opprette bruker, prøv igjen.", 500);
     return next(error);
@@ -157,7 +158,7 @@ const login = async (req, res, next) => {
 const deleteUser = async (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
-
+  //update this so users only need to use their passwords to delete their accounts
   let findUser;
   try {
     findUser = await User.findOne({ email: email });
@@ -173,6 +174,7 @@ const deleteUser = async (req, res, next) => {
     );
     return next(error);
   }
+  //add authorization to make sure that admins dont need password to acess this and if it isnt an admin then password is required*
 
   let isValidPassword = false;
   try {
@@ -190,7 +192,7 @@ const deleteUser = async (req, res, next) => {
     return next(error);
   }
   try {
-    await User.deleteOne({ email: email });
+    await User.deleteOne({ email: findUser.email });
   } catch (err) {
     const error = new HttpError(
       "Noe gikk galt, vennligst prøv igjen senere.",
@@ -212,8 +214,49 @@ const logOut = (req, res, next) => {
   res.status(200).json("Du har blitt logget ut!");
 };
 
+const updateRole = async (req, res, next) => {
+  const email = req.body.email;
+  //add an authorization to make sure only admins are access this*
+  let findUser;
+  try {
+    findUser = await User.findOne({ email: email });
+  } catch (err) {
+    const error = new HttpError("Noe gikk galt, vennligst prøv igjen", 500);
+    return next(error);
+  }
+
+  if (!findUser) {
+    const error = new HttpError(
+      "Ugyldig inndata, kunne ikke oppdatere kontoen",
+      404
+    );
+    return next(error);
+  }
+
+  let response;
+  if (findUser.admin === true) {
+    try {
+      await User.updateOne({ email }, { admin: false });
+    } catch (err) {
+      const error = new HttpError("Noe gikk galt, vennligst prøv igjen.", 404);
+      return next(error);
+    }
+    response = "administrator rollen er fjernet";
+  } else {
+    try {
+      await User.updateOne({ email }, { admin: true });
+    } catch (err) {
+      const error = new HttpError("Noe gikk galt, vennligst prøv igjen.", 404);
+      return next(error);
+    }
+    response = "brukeren er nå administrator";
+  }
+
+  res.status(200).json(response);
+};
 exports.getUsers = getUsers;
 exports.signup = signup;
 exports.login = login;
 exports.deleteUser = deleteUser;
 exports.logOut = logOut;
+exports.updateRole = updateRole;
