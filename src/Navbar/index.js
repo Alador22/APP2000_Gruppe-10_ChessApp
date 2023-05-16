@@ -1,9 +1,15 @@
-import React, { useContext } from 'react';
+
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from "../AuthContext";
 import './style.css';
 
 function Navbar({ isLoggedIn, setIsLoggedIn }) {
+  const navigate = useNavigate();  // Henter navigasjonsfunksjonen fra react-router-dom
+
+  const handleLogoutClick = () => {
+    setIsLoggedIn(false);  // Setter isLoggedIn til false
+    navigate('/');  // Navigerer tilbake til hovedsiden
+  };
+
   return (
     <nav>
       <ul>
@@ -21,5 +27,4 @@ function Navbar({ isLoggedIn, setIsLoggedIn }) {
     </nav>
   );
 }
-
 export default Navbar;

@@ -7,7 +7,7 @@ import FindMatches from "./FindMatches";
 import LoginForm from "./LoginPage/LoginForm";
 import './App.css';
 
-// Hovedkomponenten App
+
 function App() {
 // State-variabel for påloggingstilstand og dens oppdateringsfunksjon
 const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -17,7 +17,7 @@ const handleLoginState = (state) => {
 setIsLoggedIn(state);
 };
 
-// Returnerer App-komponentens struktur
+
 return (
 // Håndterer ruting mellom sidene med BrowserRouter
 <Router>
