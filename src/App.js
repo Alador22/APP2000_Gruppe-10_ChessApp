@@ -8,32 +8,39 @@ import LoginForm from "./LoginPage/LoginForm";
 import './App.css';
 
 
-
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+// State-variabel for påloggingstilstand og dens oppdateringsfunksjon
+const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleLoginState = (state) => {
-    setIsLoggedIn(state);
-  };
+// Funksjon for å oppdatere påloggingstilstanden
+const handleLoginState = (state) => {
+setIsLoggedIn(state);
+};
 
-  return (
-    <Router>
-      <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-      <div className="app-content">
-        {isLoggedIn ? (
-          <Routes>
-            <Route path="/HomePage" element={<HomePage />} />
-            <Route path="/Practice" element={<Practice />} />
-            <Route path="/FindMatches" element={<FindMatches />} />
-            <Route path="/" element={<HomePage />} />
-          </Routes>
-        ) : (
-          <LoginForm onLogin={() => handleLoginState(true)} />
-        )}
-      </div>
-      </Router>
-        
-  );
+
+return (
+// Håndterer ruting mellom sidene med BrowserRouter
+<Router>
+{/* Viser Navbar-komponenten hvis brukeren er logget inn */}
+{isLoggedIn && <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}
+ {/* Appens innhold av sider */}
+ <div className="app-content">
+    {/* Viser rutekomponentene hvis brukeren er logget inn */}
+    {isLoggedIn ? (
+      <Routes>
+        <Route path="/HomePage" element={<HomePage />} />
+        <Route path="/Practice" element={<Practice />} />
+        <Route path="/FindMatches" element={<FindMatches />} />
+        <Route path="/" element={<HomePage />} />
+      </Routes>
+    ) : (
+      // Viser LoginForm-komponenten hvis brukeren ikke er logget inn
+      <LoginForm onLogin={() => handleLoginState(true)} />
+    )}
+  </div>
+</Router>
+);
 }
+
 
 export default App;

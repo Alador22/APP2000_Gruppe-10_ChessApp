@@ -14,7 +14,6 @@ function LoginForm({ onLogin }) {
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
   const navigate = useNavigate();
 
-  
 
   // Funksjon for å sende innloggingen
   const handleLoginSubmit = async (event) => {
