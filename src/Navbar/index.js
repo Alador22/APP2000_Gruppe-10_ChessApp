@@ -4,13 +4,7 @@ import "./style.css";
 import DropdownMeny from "./dropdownmeny"
 
 function Navbar({ isLoggedIn, setIsLoggedIn }) {
-  const navigate = useNavigate();  // Henter navigasjonsfunksjonen fra react-router-dom
-
-  const handleLogoutClick = () => {
-    setIsLoggedIn(false);  // Setter isLoggedIn til false
-    navigate('/');  // Navigerer tilbake til hovedsiden
-  };
-
+  
   return (
     <nav>
       <ul>

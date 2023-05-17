@@ -41,7 +41,7 @@ nav ul li a {
 
 /* rød effekt over tekst i navbar */
 nav ul li a:hover {
-  color: #a7370b;
+  color: #be0f0f;
 }
 
 .dropdown-meny {
@@ -55,7 +55,7 @@ nav ul li a:hover {
   background-color: #f1f1f1;
   min-width: 160px;
   z-index: 1;
-  transform: translateX(-80%);
+  transform: translateX(-78%);
 }
 
 .dropdown-innhold a {
