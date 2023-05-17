@@ -1,7 +1,7 @@
-import React, { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../AuthContext";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./style.css";
+import DropdownMeny from "./dropdownmeny"
 
 function Navbar({ isLoggedIn, setIsLoggedIn }) {
   return (
@@ -17,18 +17,7 @@ function Navbar({ isLoggedIn, setIsLoggedIn }) {
           <Link to="/FindMatches">Find Matches</Link>
         </li>
       </ul>
-
-      <Link to="/">
-        <button
-          onClick={() => {
-            if (isLoggedIn) {
-              setIsLoggedIn(false);
-            }
-          }}
-        >
-          {isLoggedIn ? "Log Out" : "Log In"}
-        </button>
-      </Link>
+      <DropdownMeny isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
     </nav>
   );
 }

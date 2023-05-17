@@ -44,6 +44,35 @@ nav ul li a:hover {
   color: #be0f0f;
 }
 
+.dropdown-meny {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-innhold {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  z-index: 1;
+  transform: translateX(-80%);
+}
+
+.dropdown-innhold a {
+  color: #020303;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-innhold a:hover {
+  background-color: #ddd;
+}
+
+.dropdown-meny.show .dropdown-innhold{
+  display:block;
+}
+
 /* Farge og diverse for login knapp */
 nav button {
   cursor: pointer; /* musepeker over knapp */
