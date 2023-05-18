@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
+import jwtDecode from 'jwt-decode';
 import "./LoginForm.css";
 import { useNavigate } from "react-router-dom";
 import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "../shared/util/validators";
+import { AuthContext } from "../AuthContext";
 
 
 // Definerer tilstander login / registrering
 const LoginForm = ({ onLogin }) => {
+  const {setAuthData} = useContext(AuthContext);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -31,6 +34,10 @@ const LoginForm = ({ onLogin }) => {
         }
       );
       console.log(response.data);
+      const token = response.data.token;
+      localStorage.setItem("token", token);
+      const decodedToken = jwtDecode(token);
+      setAuthData(decodedToken); // Plasserer JWT
       onLogin(); // Oppdater innloggingsstatus til App-komponenten
       navigate("HomePage"); // etter vellykket innlogging, så blir brukeren omderigert til HomePage.
     } catch (error) {
@@ -60,8 +67,11 @@ const LoginForm = ({ onLogin }) => {
           },
         }
       );
-      console.log(response.data);
-      setRegistrationSuccessful(true);
+     // Etter du har registrert deg så lagres JWT lokalt
+    localStorage.setItem("token", response.data.token);
+
+    console.log(response.data);
+    setRegistrationSuccessful(true);
     } catch (error) {
       console.error(error);
     }
@@ -90,7 +100,7 @@ const LoginForm = ({ onLogin }) => {
         {showRegisterForm && (
           <div>
             <label>
-              Name:
+              Navn:
               <input
                 type="text"
                 name="name"
@@ -102,7 +112,7 @@ const LoginForm = ({ onLogin }) => {
           </div>
         )}
         <label>
-          Email:
+          Epost:
           <input
             type="email"
             name="email"
@@ -113,7 +123,7 @@ const LoginForm = ({ onLogin }) => {
         </label>
         <br />
         <label>
-          Password:
+          Passord:
           <input
             type="password"
             name="password"

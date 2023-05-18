@@ -6,6 +6,7 @@ import Practice from "./Practice";
 import FindMatches from "./FindMatches";
 import LoginForm from "./LoginPage/LoginForm";
 import './App.css';
+import { AuthProvider } from "./AuthContext";
 
 
 function App() {
@@ -19,8 +20,10 @@ setIsLoggedIn(state);
 
 
 return (
-// Håndterer ruting mellom sidene med BrowserRouter
+  <AuthProvider>
+
 <Router>
+{ /* Håndterer ruting mellom sidene med BrowserRouter */ }
 {/* Viser Navbar-komponenten hvis brukeren er logget inn */}
 {isLoggedIn && <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />}
  {/* Appens innhold av sider */}
@@ -39,6 +42,7 @@ return (
     )}
   </div>
 </Router>
+</AuthProvider>
 );
 }
 
