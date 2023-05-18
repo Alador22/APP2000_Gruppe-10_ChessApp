@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import axios from "axios";
 import "./LoginForm.css";
 import { useNavigate } from "react-router-dom";
+import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "../shared/util/validators";
 
 
 // Definerer tilstander login / registrering
-function LoginForm({ onLogin }) {
+const LoginForm = ({ onLogin }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,7 +22,8 @@ function LoginForm({ onLogin }) {
     try {
       const response = await axios.post(
         process.env.REACT_APP_BACKEND_URL + "/users/login",
-        { email, password },
+        { email, 
+          password },
         {
           headers: {
             "Content-Type": "application/json",
@@ -102,9 +104,10 @@ function LoginForm({ onLogin }) {
         <label>
           Email:
           <input
-            type="text"
+            type="email"
             name="email"
             value={email}
+            validators={[VALIDATOR_EMAIL()]}
             onChange={(e) => setEmail(e.target.value)}
           />
         </label>
@@ -115,18 +118,20 @@ function LoginForm({ onLogin }) {
             type="password"
             name="password"
             value={password}
+            validators={[VALIDATOR_MINLENGTH(6)]}
+          errorText="Vær så snill og lag passordet 6 karakterer langt!"
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
         <br />
         {registrationSuccessful ? (
           <div>
-            <p>Registration successful! Go login.</p>
+            <p>Registrering gjennomført! Logg deg inn!.</p>
             <button
               onClick={handleBackToLoginClick}
               className="register-btn-small"
             >
-              Back to Login
+              Tilbake til Logg inn siden
             </button>
           </div>
         ) : (
@@ -142,16 +147,16 @@ function LoginForm({ onLogin }) {
                 onClick={handleBackToLoginClick}
                 className="register-btn-small"
               >
-                Back to Login
+                Tilbake til LoginSiden
               </button>
             ) : (
               <p>
-                Don't have an account?{" "}
+                Har du ikke en konto?{" "}
                 <button
                   onClick={handleRegisterClick}
                   className="register-btn-small"
                 >
-                  Register here
+                  Registrer deg her!
                 </button>
               </p>
             )}

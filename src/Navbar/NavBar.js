@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./style.css";
 import DropdownMeny from "./dropdownmeny"
 
@@ -9,13 +9,13 @@ function Navbar({ isLoggedIn, setIsLoggedIn }) {
     <nav>
       <ul>
         <li>
-          <Link to="/">Home</Link>
+          <NavLink to="/" exact >Home</NavLink>
         </li>
         <li>
-          <Link to="/Practice">Practice</Link>
+          <NavLink to="/Practice">Practice</NavLink>
         </li>
         <li>
-          <Link to="/FindMatches">Find Matches</Link>
+          <NavLink to="/FindMatches">Find Matches</NavLink>
         </li>
       </ul>
       <DropdownMeny isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
