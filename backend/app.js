@@ -26,8 +26,8 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/users", userLimiter.userInteractionLimiter, usersRoutes);
-app.use("/api/openings", openingsRoutes);
-app.use("/api/games", gamesRoutes);
+app.use("/api/openings", userLimiter.userInteractionLimiter, openingsRoutes);
+app.use("/api/games", userLimiter.matchesLimiter, gamesRoutes);
 //vi bruker Path bibliotek for å kjøre Public-filen som frontend
 app.use((req, res, next) => {
   res.sendFile(path.resolve(__dirname, "public", "index.html"));
