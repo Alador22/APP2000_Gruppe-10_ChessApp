@@ -4,12 +4,12 @@ const Opening = require("../models/opening");
 
 // Får alle åpninger av brukeren
 const getOpenings = async (req, res, next) => {
-  const creatorId = req.params.creatorId;
+  const creatorId = req.userData.userId;
   let customOpenings;
   let defaultOpenings;
   try {
     defaultOpenings = await Opening.find({
-      creator_id: "645d420a5095688bc839c600", //creatorID til Admin konto som er brukt for å lagre defaultOpenings
+      creator_id: "64617a3fe26a437d1c0978e9", //creatorID til Admin konto som er brukt for å lagre defaultOpenings
     });
     customOpenings = await Opening.find({ creator_id: creatorId });
   } catch (err) {
@@ -35,23 +35,18 @@ const createOpening = async (req, res, next) => {
   const name = req.body.name;
   const moves = req.body.moves;
   const description = req.body.description;
-  const creator_id = req.body.creator_id;
+  const creator_id = req.userData.userId;
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(new HttpError("Ugyldige inndata! vennligst prøv igjen.", 422));
   }
   // Sjekker om åpning allerede eksisterer
-  let findingOpening;
-  try {
-    findingOpening = await Opening.findOne({ name: name });
-  } catch (err) {
-    const error = new HttpError(
-      "kunne ikke opprette åpning, prøv igjen senere.",
-      500
-    );
-    return next(error);
-  }
+
+  let findingOpening = await Opening.findOne().and([
+    { name: name },
+    { creator_id: creator_id },
+  ]);
 
   if (findingOpening) {
     const error = new HttpError(
@@ -68,6 +63,7 @@ const createOpening = async (req, res, next) => {
     description,
     creator_id,
   });
+
   //add authorization to make sure that users can only save openings on their accounts*
   try {
     await Opening.create(createdOpening);
@@ -83,22 +79,21 @@ const createOpening = async (req, res, next) => {
 
 // Oppdaterer en eksisterende åpning
 const updateOpening = async (req, res, next) => {
-  const name = req.params.name;
+  const _id = req.params._id;
+  const name = req.body.name;
   const moves = req.body.moves;
   const description = req.body.description;
+  const creator_id = req.userData.userId;
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return next(new HttpError("Ugyldige inndata, vennligst prøv igjen.", 422));
   }
 
-  let opening;
-  try {
-    opening = await Opening.findOne({ name: name });
-  } catch (err) {
-    const error = new HttpError("noe gikk galt. Prøv igjen senere.", 500);
-    return next(error);
-  }
+  let opening = await Opening.findOne().and([
+    { _id: _id },
+    { creator_id: creator_id },
+  ]);
 
   if (!opening) {
     const error = new HttpError(
@@ -111,7 +106,7 @@ const updateOpening = async (req, res, next) => {
   opening.name = name;
   opening.moves = moves;
   opening.description = description;
-  //add authorization to make sure that users can only update their openings*
+
   try {
     await Opening.create(opening);
   } catch (err) {
@@ -127,18 +122,13 @@ const updateOpening = async (req, res, next) => {
 
 //sletting av en åpning
 const deleteOpening = async (req, res, next) => {
-  const name = req.body.name;
+  const _id = req.params._id;
+  const creator_id = req.userData.userId;
 
-  let deleteOpening;
-  try {
-    deleteOpening = await Opening.findOne({ name: name });
-  } catch (err) {
-    const error = new HttpError(
-      "Noe gikk galt, kunne ikke slette åpningen.",
-      500
-    );
-    return next(error);
-  }
+  let deleteOpening = await Opening.findOne().and([
+    { _id: _id },
+    { creator_id: creator_id },
+  ]);
 
   if (!deleteOpening) {
     const error = new HttpError(
@@ -147,9 +137,9 @@ const deleteOpening = async (req, res, next) => {
     );
     return next(error);
   }
-  //add authorization to make sure that users can only delete their openings*
+
   try {
-    deleteOpening = await Opening.deleteOne({ name: name });
+    deleteOpening = await Opening.deleteOne({ _id });
   } catch (err) {
     const error = new HttpError(
       "Noe gikk galt, kunne ikke slette åpningen.",

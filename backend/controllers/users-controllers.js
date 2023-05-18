@@ -2,22 +2,9 @@ const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const HttpError = require("../models/http-error");
 const User = require("../models/user");
+const Opening = require("../models/opening");
 const jwt = require("jsonwebtoken");
-
-//vi får alle brukerne på User collection uten deres passord
-const getUsers = async (req, res, next) => {
-  let users;
-  try {
-    users = await User.find({}, "-password");
-  } catch (err) {
-    const error = new HttpError(
-      "Henting av brukere mislyktes, Prøv igjen senere.",
-      500
-    );
-    return next(error);
-  }
-  res.json({ users: users.map((user) => user.toObject({ getters: true })) });
-};
+const mongoose = require("mongoose");
 
 //koden som kjøres for å opprette en bruker på databasen
 const signup = async (req, res, next) => {
@@ -27,16 +14,10 @@ const signup = async (req, res, next) => {
   }
 
   const { name, email, password } = req.body;
-  //sjekker om brukeren finnes allerede i databasen
-  let existingUser;
-  try {
-    existingUser = await User.findOne({ email: email });
-  } catch (err) {
-    const error = new HttpError("noe gikk galt. Prøv igjen senere.", 500);
-    return next(error);
-  }
 
-  if (existingUser) {
+  let alreadyUser = await User.findOne({ email: email });
+
+  if (alreadyUser) {
     const error = new HttpError(
       "Brukeren eksisterer allerede, vennligst logg på i stedet.",
       422
@@ -45,7 +26,6 @@ const signup = async (req, res, next) => {
   }
 
   //passordet er saltet og hashet før det sendes til databasen
-
   let hashedPassword;
   const rounds = 12;
   try {
@@ -56,7 +36,7 @@ const signup = async (req, res, next) => {
   }
 
   //denne strukturen sendes som et json format til databasen slik at brukeren kan lagres
-  const createdUser = new User({
+  const newUser = new User({
     name,
     email,
     image: "https://web01.usn.no/~lonnesta/Tor_Lonnestad.jpg",
@@ -66,47 +46,43 @@ const signup = async (req, res, next) => {
   });
 
   try {
-    await User.create(createdUser);
+    await User.create(newUser);
   } catch (err) {
     const error = new HttpError("noe gikk galt, vennligst prøv igjen.", 500);
     return next(error);
   }
-  /*
+
   let token;
   try {
     token = jwt.sign(
-      { userId: createdUser.id, email: createdUser.email },
-      "Cheesy_Chess",
-      { expiresIn: "1h" }
+      {
+        userId: newUser.id,
+        email: newUser.email,
+        elo: newUser.elo,
+        admin: newUser.admin,
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "1h" },
+      { algorithm: "RS256" }
     );
   } catch (err) {
-    const error = new HttpError("Signing up failed, please try again.", 500);
+    const error = new HttpError(
+      "kunne ikke registrere deg,vennligst prøv igjen",
+      500
+    );
     return next(error);
   }
-
-  res
-    .status(201)
-    .json({ userId: createdUser.id, email: createdUser.email, token: token });
-};*/
-  res.status(201).json({ user: createdUser.toObject({ getters: true }) });
+  res.status(201).json({ token: token });
 };
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   //sjekker om brukeren finnes i databasen
-  let existingUser;
-  try {
-    existingUser = await User.findOne({ email: email });
-  } catch (err) {
-    const error = new HttpError(
-      "Innlogging mislyktes, Prøv igjen senere.",
-      500
-    );
-    return next(error);
-  }
 
-  if (!existingUser) {
+  let alreadyUser = await User.findOne({ email: email });
+
+  if (!alreadyUser) {
     const error = new HttpError(
       "Ugyldig inndata, kunne ikke logge deg på nå.",
       401
@@ -116,7 +92,7 @@ const login = async (req, res, next) => {
   //vi bruker bcrypt-biblioteket for å sjekke om passordet som er gitt samsvarer med den hashed passordet som er lagret i databasen
   let isValidPassword = false;
   try {
-    isValidPassword = await bcrypt.compare(password, existingUser.password);
+    isValidPassword = await bcrypt.compare(password, alreadyUser.password);
   } catch (err) {
     const error = new HttpError(
       "Kunne ikke logge deg på, vennligst prøv igjen.",
@@ -132,49 +108,37 @@ const login = async (req, res, next) => {
     );
     return next(error);
   }
-  /*
+
   let token;
   try {
     token = jwt.sign(
-      { userId: existingUser.id, email: existingUser.email },
-      "Cheesy_Chess",
-      { expiresIn: "1h" }
+      {
+        userId: alreadyUser.id,
+        email: alreadyUser.email,
+        elo: alreadyUser.elo,
+        admin: alreadyUser.admin,
+      },
+      process.env.ACCESS_TOKEN_SECRET,
+      { expiresIn: "1h" },
+      { algorithm: "RS256" }
     );
   } catch (err) {
-    const error = new HttpError("Logging in failed, please try again.", 500);
+    const error = new HttpError(
+      "kunne ikke logge deg på,vennligst prøv igjen.",
+      500
+    );
     return next(error);
   }
-
-  res.json({
-    userId: existingUser.id,
-    email: existingUser.email,
-    token: token,
-  });
-*/
-  res.json({ message: "Logged in!" });
+  res.status(201).json({ token: token });
 };
 
 //slette brukeren ved først å autentisere
 const deleteUser = async (req, res, next) => {
-  const email = req.body.email;
+  const email = req.userData.email;
   const password = req.body.password;
-  //update this so users only need to use their passwords to delete their accounts
-  let findUser;
-  try {
-    findUser = await User.findOne({ email: email });
-  } catch (err) {
-    const error = new HttpError("Noe gikk galt, vennligst prøv igjen", 500);
-    return next(error);
-  }
+  const creator_id = req.userData.userId;
 
-  if (!findUser) {
-    const error = new HttpError(
-      "Ugyldig inndata, kunne ikke slette kontoen",
-      404
-    );
-    return next(error);
-  }
-  //add authorization to make sure that admins dont need password to acess this and if it isnt an admin then password is required*
+  let findUser = await User.findOne({ email: email });
 
   let isValidPassword = false;
   try {
@@ -191,8 +155,10 @@ const deleteUser = async (req, res, next) => {
     );
     return next(error);
   }
+
   try {
     await User.deleteOne({ email: findUser.email });
+    await Opening.deleteMany({ creator_id });
   } catch (err) {
     const error = new HttpError(
       "Noe gikk galt, vennligst prøv igjen senere.",
@@ -203,31 +169,73 @@ const deleteUser = async (req, res, next) => {
   res.status(200).json("kontoen har blitt slettet!");
 };
 
-const logOut = (req, res, next) => {
+const changePass = async (req, res, next) => {
+  const email = req.userData.email;
+  const oldPassword = req.body.password;
+  const newPass = req.body.newPass;
+
+  let findUser = await User.findOne({ email: email });
+
+  let isValidPassword = false;
   try {
-    //req.session.destroy();
+    isValidPassword = await bcrypt.compare(oldPassword, findUser.password);
   } catch (err) {
-    const error = new HttpError("Noe gikk galt, vennligst prøv igjen.", 404);
+    const error = new HttpError("Noe gikk galt, vennligst prøv igjen.", 500);
+    return next(error);
+  }
+  if (!isValidPassword) {
+    const error = new HttpError(
+      "Ugyldig inndata, kunne ikke endre passord",
+      401
+    );
     return next(error);
   }
 
-  res.status(200).json("Du har blitt logget ut!");
+  let isSamePassword = false;
+  try {
+    isSamePassword = await bcrypt.compare(newPass, findUser.password);
+  } catch (err) {
+    const error = new HttpError("Noe gikk galt, vennligst prøv igjen.", 500);
+    return next(error);
+  }
+  if (isSamePassword) {
+    const error = new HttpError("du har allerede dette som passord!", 401);
+    return next(error);
+  }
+
+  let rounds;
+  let password;
+  try {
+    rounds = 12;
+    password = await bcrypt.hash(newPass, rounds);
+    await User.updateOne({ email }, { password: password });
+  } catch (err) {
+    const error = new HttpError(
+      "Noe gikk galt, vennligst prøv igjen senere.",
+      404
+    );
+    return next(error);
+  }
+  res.status(200).json("passordet er oppdatert!");
 };
 
-const updateRole = async (req, res, next) => {
+const updateAdminRole = async (req, res, next) => {
   const email = req.body.email;
-  //add an authorization to make sure only admins are access this*
-  let findUser;
-  try {
-    findUser = await User.findOne({ email: email });
-  } catch (err) {
-    const error = new HttpError("Noe gikk galt, vennligst prøv igjen", 500);
+  const isAdmin = req.userData.admin;
+
+  if (!isAdmin) {
+    const error = new HttpError(
+      "du trenger en administratorrolle for å gjøre denne endringen ",
+      404
+    );
     return next(error);
   }
+
+  let findUser = await User.findOne({ email: email });
 
   if (!findUser) {
     const error = new HttpError(
-      "Ugyldig inndata, kunne ikke oppdatere kontoen",
+      "Ugyldig inndata, kunne ikke finne kontoen",
       404
     );
     return next(error);
@@ -254,9 +262,49 @@ const updateRole = async (req, res, next) => {
 
   res.status(200).json(response);
 };
-exports.getUsers = getUsers;
+
+const adminDeleteUser = async (req, res, next) => {
+  const email = req.body.email;
+  let creator_id;
+  const isAdmin = req.userData.admin;
+
+  if (!isAdmin) {
+    const error = new HttpError(
+      "du trenger en administratorrolle for å gjøre denne endringen ",
+      404
+    );
+    return next(error);
+  }
+
+  let findUser = await User.findOne({ email: email });
+
+  if (!findUser) {
+    const error = new HttpError(
+      "Ugyldig inndata, kunne ikke finne kontoen",
+      404
+    );
+    return next(error);
+  }
+
+  creator_id = findUser.id;
+
+  try {
+    await User.deleteOne({ email: findUser.email });
+    await Opening.deleteMany({ creator_id });
+  } catch (err) {
+    const error = new HttpError(
+      "Noe gikk galt, vennligst prøv igjen senere.",
+      404
+    );
+    return next(error);
+  }
+  res.status(200).json("kontoen har blitt slettet!");
+};
+
+//make an admin banning function and another function for forgot password
 exports.signup = signup;
 exports.login = login;
 exports.deleteUser = deleteUser;
-exports.logOut = logOut;
-exports.updateRole = updateRole;
+exports.updateAdminRole = updateAdminRole;
+exports.adminDeleteUser = adminDeleteUser;
+exports.changePass = changePass;
