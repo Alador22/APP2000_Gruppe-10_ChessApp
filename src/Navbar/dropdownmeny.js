@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { AuthContext } from "../AuthContext"; // Change to your correct path
 
 const DropdownMeny = ({ isLoggedIn, setIsLoggedIn }) => {
@@ -31,9 +31,8 @@ const DropdownMeny = ({ isLoggedIn, setIsLoggedIn }) => {
       {isLoggedIn && <p>Logged in as: {authData.email}</p>} {/* Her vises brukerens epost */}
       {isOpen && (
         <div className="dropdown-innhold">
-          <Link to="/Profilside">Profilside</Link>
-          <Link to="/Settings">SettingsSide</Link>
-          <Link to="/">
+          <NavLink to="/Profilside">Profilside</NavLink>
+          <NavLink to="/">
             <button
               onClick={() => {
                 if (isLoggedIn) {
@@ -43,7 +42,7 @@ const DropdownMeny = ({ isLoggedIn, setIsLoggedIn }) => {
             >
               {isLoggedIn ? "Log Out" : "Log In"}
             </button>
-          </Link>
+          </NavLink>
         </div>
       )}
     </div>

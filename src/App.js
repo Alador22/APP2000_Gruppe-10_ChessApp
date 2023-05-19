@@ -5,6 +5,7 @@ import HomePage from "./HomePage";
 import Practice from "./Practice";
 import FindMatches from "./FindMatches";
 import LoginForm from "./LoginPage/LoginForm";
+import Profilside from "./Profil/Profilside";
 import './App.css';
 import { AuthProvider } from "./AuthContext";
 
@@ -34,6 +35,7 @@ return (
         <Route path="/HomePage" element={<HomePage />} />
         <Route path="/Practice" element={<Practice />} />
         <Route path="/FindMatches" element={<FindMatches />} />
+        <Route path="/Profilside" element={<Profilside />} />
         <Route path="/" element={<HomePage />} />
       </Routes>
     ) : (
