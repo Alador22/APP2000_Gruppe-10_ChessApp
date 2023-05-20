@@ -5,47 +5,52 @@ import "./Profil.css";
 const Profilside = () => {
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
-
+  const token = localStorage.getItem("token");
   const handlePasswordChange = async () => {
     try {
-        const response = await axios.patch("http://localhost:5000/api/users/profile", {
-            password: newPassword,
-            newPass: newPassword,
+      const response = await axios.patch(
+        "http://localhost:5000/api/users/profile",
+        {
+          password: password,
+          newPass: newPassword,
         },
         {
-            Headers: { "Content-Type": "application/json",
-            },
+          Headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
         }
-        );
+      );
 
-        if (response.status === 200) {
-            //sier ifra om passord ble byttet
-            console.log("passord endret");
-        } else {
-            //sier ifra om passord ikke ble byttet
-            console.log("Feil, passord ikke byttet");
-        }
+      if (response.status === 200) {
+        //sier ifra om passord ble byttet
+        console.log("passord endret");
+      } else {
+        //sier ifra om passord ikke ble byttet
+        console.log("Feil, passord ikke byttet");
+      }
     } catch (error) {
-        console.error(error);
+      console.error(error);
     }
   };
 
-
   const handleDeleteKonto = async () => {
     try {
-        const response = await axios.delete("http://localhost:5000/api/users/profile");
+      const response = await axios.delete(
+        "http://localhost:5000/api/users/profile"
+      );
 
-        if (response.status === 200) {
+      if (response.status === 200) {
         //sier ifra om konto ble slettet
         console.log("konto ble slettet");
-        } else {
+      } else {
         // sier ifra om kontoen ikke ble slettet
         console.log("Feil, konto ikke slettet");
-        }
-    }catch (error) {
-        console.error(error);
+      }
+    } catch (error) {
+      console.error(error);
     }
-};
+  };
 
   return (
     <div className="Profilside-body">
