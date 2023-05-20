@@ -1,11 +1,17 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./Profil.css";
+import jwtDecode from "jwt-decode";
 
 const Profilside = () => {
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const token = localStorage.getItem("token");
+  const decodedToken = jwtDecode(token);
+  console.log(decodedToken.name);
+  console.log(decodedToken.email);
+  console.log(decodedToken.elo);
+  console.log(decodedToken.admin);
   const handlePasswordChange = async () => {
     try {
       const response = await axios.patch(

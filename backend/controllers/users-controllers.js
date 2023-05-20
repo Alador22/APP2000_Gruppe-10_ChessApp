@@ -56,6 +56,7 @@ const signup = async (req, res, next) => {
   try {
     token = jwt.sign(
       {
+        name: newUser.name,
         userId: newUser.id,
         email: newUser.email,
         elo: newUser.elo,
@@ -113,6 +114,7 @@ const login = async (req, res, next) => {
   try {
     token = jwt.sign(
       {
+        name: alreadyUser.name,
         userId: alreadyUser.id,
         email: alreadyUser.email,
         elo: alreadyUser.elo,
