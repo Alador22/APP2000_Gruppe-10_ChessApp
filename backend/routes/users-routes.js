@@ -27,7 +27,7 @@ router.post(
 );
 
 router.patch(
-  "/settings",
+  "/profile",
   [
     check("password").isLength({ min: 6 }),
     check("newPass").isLength({ min: 6 }),
@@ -38,7 +38,7 @@ router.patch(
 
 //Route for å slette brukeren
 router.delete(
-  "/delete",
+  "/profile",
   check("password").isLength({ min: 6 }),
   tokenCheck.checkToken,
   usersController.deleteUser

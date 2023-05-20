@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
-import { NavLink } from 'react-router-dom';
+import { NavLink } from "react-router-dom";
 import { AuthContext } from "../AuthContext"; // Change to your correct path
 
 const DropdownMeny = ({ isLoggedIn, setIsLoggedIn }) => {
@@ -28,7 +28,8 @@ const DropdownMeny = ({ isLoggedIn, setIsLoggedIn }) => {
   return (
     <div className={`dropdown-meny ${isOpen ? "show" : ""}`} ref={ref}>
       <button onClick={trykkapen}>Meny</button>
-      {isLoggedIn && <p>Logged in as: {authData.email}</p>} {/* Her vises brukerens epost */}
+      {isLoggedIn && <p>Logged in as: {authData.email}</p>}{" "}
+      {/* Her vises brukerens epost */}
       {isOpen && (
         <div className="dropdown-innhold">
           <NavLink to="/Profilside">Profilside</NavLink>
@@ -47,6 +48,6 @@ const DropdownMeny = ({ isLoggedIn, setIsLoggedIn }) => {
       )}
     </div>
   );
-}
+};
 
 export default DropdownMeny;

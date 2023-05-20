@@ -108,7 +108,10 @@ const updateOpening = async (req, res, next) => {
   opening.description = description;
 
   try {
-    await Opening.create(opening);
+    await Opening.updateOne(
+      { opening },
+      { name: name, moves: moves, description: description }
+    );
   } catch (err) {
     const error = new HttpError(
       "Noe gikk galt, kunne ikke oppdatere åpningen.",
