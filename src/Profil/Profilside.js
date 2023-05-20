@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import "./Profil.css";
 
 const Profilside = () => {
@@ -6,39 +7,45 @@ const Profilside = () => {
   const [newPassword, setNewPassword] = useState("");
 
   const handlePasswordChange = async () => {
-    const response = await fetch("http://localhost:5000/api/users/profile", {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        password: newPassword,
-        newPass: newPassword,
-      }),
-    });
+    try {
+        const response = await axios.patch("http://localhost:5000/api/users/profile", {
+            password: newPassword,
+            newPass: newPassword,
+        },
+        {
+            Headers: { "Content-Type": "application/json",
+            },
+        }
+        );
 
-    if (response.ok) {
-      //sier ifra at man fikk byttet passord
-      console.log("passord endret");
-    } else {
-      //sier ifra man ikke fikk byttet passord
-      console.log("Feil, passord ikke byttet");
+        if (response.status === 200) {
+            //sier ifra om passord ble byttet
+            console.log("passord endret");
+        } else {
+            //sier ifra om passord ikke ble byttet
+            console.log("Feil, passord ikke byttet");
+        }
+    } catch (error) {
+        console.error(error);
     }
   };
+
 
   const handleDeleteKonto = async () => {
-    const response = await fetch("http://localhost:5000/api/users/profile", {
-      method: "DELETE",
-    });
+    try {
+        const response = await axios.delete("http://localhost:5000/api/users/profile");
 
-    if (response.ok) {
-      //sier ifra om konto ble slettet
-      console.log("konto ble slettet");
-    } else {
-      // sier ifra om kontoen ikke ble slettet
-      console.log("Feil, konto ikke slettet");
+        if (response.status === 200) {
+        //sier ifra om konto ble slettet
+        console.log("konto ble slettet");
+        } else {
+        // sier ifra om kontoen ikke ble slettet
+        console.log("Feil, konto ikke slettet");
+        }
+    }catch (error) {
+        console.error(error);
     }
-  };
+};
 
   return (
     <div className="Profilside-body">
