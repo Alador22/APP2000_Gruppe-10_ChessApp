@@ -4,8 +4,9 @@ import "./Profil.css";
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
-const Profilside = () => {
+const Profilside = ({setIsLoggedIn}) => {
   const [password, setPassword] = useState("");
+  const [deleteAccountPassword, setDeleteAccountPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -31,11 +32,10 @@ const Profilside = () => {
     }
   }, []); // tomt array siden effekten bare kjører en gang etter første render.
 
-  const token = localStorage.getItem("token");
-  
 
   const handlePasswordChange = async () => {
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.patch(
         "http://localhost:5000/api/users/profile",
         {
@@ -73,9 +73,14 @@ const Profilside = () => {
     }
 
     try {
+      const token = localStorage.getItem("token");
       const response = await axios.delete(
         "http://localhost:5000/api/users/profile",
         {
+          data: {
+            password: deleteAccountPassword,
+        },
+        
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
@@ -83,11 +88,13 @@ const Profilside = () => {
         }
       );
 
-      if (response.status !== 200) {
-        setErrorMessage("Kunne ikke slette kontoen din, vennligst prøv igjen");
-      }else{
+      if (response.status === 200) {
         localStorage.removeItem("token");
+        setIsLoggedIn(false);
         navigate("/");// sender til logg inn siden
+      }else{
+        setErrorMessage("Kunne ikke slette kontoen din, vennligst prøv igjen");
+
       }
     } catch (error) {
       console.error(error);
@@ -128,13 +135,23 @@ const Profilside = () => {
           </label>
         </div>
         <div>
+          <button onClick={handlePasswordChange}>Endre passord</button>
+        </div>
+        <div>
+          <label>
+            Du må Skrive inn passordet ditt for å kunne slette kontoen din:
+            <input
+            type="password"
+            value={deleteAccountPassword}
+            onChange={(e) => setDeleteAccountPassword(e.target.value)}
+            />
+          </label>
+        </div>
+        <div>
           <label>
             <input type="checkbox" onChange={(e) => setConfirmed(e.target.checked)} />
             Jeg bekrefter at jeg vil slette kontoen min.
           </label>
-        </div>
-        <div>
-          <button onClick={handlePasswordChange}>Endre passord</button>
         </div>
         <div>
           <button onClick={handleDeleteKonto}>Slett konto</button>

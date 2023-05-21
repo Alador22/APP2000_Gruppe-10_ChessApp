@@ -36,7 +36,7 @@ return (
         <Route path="/HomePage" element={<HomePage />} />
         <Route path="/Practice" element={<Practice />} />
         <Route path="/FindMatches" element={<FindMatches />} />
-        <Route path="/Profilside" element={<Profilside />} />
+        <Route path="/Profilside" element={<Profilside setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/AdminPage" element={<AdminPage />} > </Route>
       </Routes>
