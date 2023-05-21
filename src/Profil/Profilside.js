@@ -14,7 +14,6 @@ const Profilside = ({setIsLoggedIn}) => {
   const [admin, setAdmin] = useState("");
   const [errorMessage, setErrorMessage] =useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
-  const [confirmed, setConfirmed] = useState(false);
   const navigate = useNavigate();
 
 
@@ -64,14 +63,6 @@ const Profilside = ({setIsLoggedIn}) => {
 
   const handleDeleteKonto = async () => {
     setErrorMessage(null);
-    if(!confirmed) {
-      window.alert("Du må bekrefte for å kunne slette kontoen");
-      return;
-    }
-    if(!window.confirm("Er du sikker på at du vil slette kontoen din?")){
-      return;
-    }
-
     try {
       const token = localStorage.getItem("token");
       const response = await axios.delete(
@@ -112,7 +103,7 @@ const Profilside = ({setIsLoggedIn}) => {
           <p>Brukernavn: {name}</p>
           <p>Email: {email}</p>
           <p>Elo: {elo}</p>
-          <p>Er administrator?: {admin ? "ja" : "Nei"}</p>
+          {admin && <p>Admin: Ja</p>}
         </div>
         <div>
           <label>
@@ -145,12 +136,6 @@ const Profilside = ({setIsLoggedIn}) => {
             value={deleteAccountPassword}
             onChange={(e) => setDeleteAccountPassword(e.target.value)}
             />
-          </label>
-        </div>
-        <div>
-          <label>
-            <input type="checkbox" onChange={(e) => setConfirmed(e.target.checked)} />
-            Jeg bekrefter at jeg vil slette kontoen min.
           </label>
         </div>
         <div>
