@@ -8,6 +8,7 @@ import LoginForm from "./LoginPage/LoginForm";
 import Profilside from "./Profil/Profilside";
 import './App.css';
 import { AuthProvider } from "./AuthContext";
+import AdminPage from "./Admini/Admin";
 
 
 function App() {
@@ -37,6 +38,7 @@ return (
         <Route path="/FindMatches" element={<FindMatches />} />
         <Route path="/Profilside" element={<Profilside />} />
         <Route path="/" element={<HomePage />} />
+        <Route path="/AdminPage" element={<AdminPage />} > </Route>
       </Routes>
     ) : (
       // Viser LoginForm-komponenten hvis brukeren ikke er logget inn

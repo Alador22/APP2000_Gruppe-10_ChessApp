@@ -39,6 +39,7 @@ const LoginForm = ({ onLogin }) => {
       const decodedToken = jwtDecode(token);
       setAuthData(decodedToken); // Plasserer JWT
       onLogin(); // Oppdater innloggingsstatus til App-komponenten
+      if (decodedToken) // Sørger for at du har en token føre den sender deg vidre
       navigate("HomePage"); // etter vellykket innlogging, så blir brukeren omderigert til HomePage.
     } catch (error) {
       console.error(error);
@@ -50,11 +51,11 @@ const LoginForm = ({ onLogin }) => {
   const handleRegisterSubmit = async (event) => {
     event.preventDefault();
     if (!name || !email || !password) {
-      setErrorMessage("Please fill in all fields");
+      setErrorMessage("Fyll inn alle feltene vær så snill");
       return;
     }
     if (typeof password !== "string") {
-      setErrorMessage("Password must be a string");
+      setErrorMessage("Passordet må være 6 karakterer langt");
       return;
     }
     try {

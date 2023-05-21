@@ -73,6 +73,8 @@ nav ul li a:hover {
   display:block;
 }
 
+
+
 /* Farge og diverse for login knapp */
 nav button {
   cursor: pointer; /* musepeker over knapp */
@@ -92,4 +94,12 @@ nav button:hover {
   border-color: rgba(70, 130, 180, 0.8); /* Border farge og transperancy */
   color: #fff; /* Tekstfarge tilbake til hvit */
   box-shadow: 0 0 10px rgba(70, 130, 180, 0.8); /* Legger til skyggeeffekt */
+}
+
+nav p.logged-in-text {
+  color: rgb(255, 255, 255);
+  font-weight: bold;
+  background-color: rgb(2, 34, 2);
+  border: 2px solid rgb(255, 255, 255);
+  padding: 5px;
 }
