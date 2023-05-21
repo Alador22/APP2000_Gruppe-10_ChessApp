@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./Profil.css";
 import jwtDecode from "jwt-decode";
+import { useNavigate } from "react-router-dom";
 
 const Profilside = () => {
   const [password, setPassword] = useState("");
@@ -10,16 +11,28 @@ const Profilside = () => {
   const [email, setEmail] = useState("");
   const [elo, setElo] = useState("");
   const [admin, setAdmin] = useState("");
+  const [errorMessage, setErrorMessage] =useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+  const [confirmed, setConfirmed] = useState(false);
+  const navigate = useNavigate();
+
+
+  useEffect (() => {
+    try{
+      const token = localStorage.getItem("token");
+      const decodedToken = jwtDecode(token);
+      setName(decodedToken.name);
+      setEmail(decodedToken.email);
+      setElo(decodedToken.elo);
+      setAdmin(decodedToken.admin);
+    }catch (error) {
+      console.error("Det er ikke mulig å decode token:", error);
+      setErrorMessage("Det var ikke mulig å hente din informasjon, vennligst log in på nytt");
+    }
+  }, []); // tomt array siden effekten bare kjører en gang etter første render.
 
   const token = localStorage.getItem("token");
-  const decodedToken = jwtDecode(token);
-
-  useEffect(() => {
-    setName(decodedToken.name);
-    setEmail(decodedToken.email);
-    setElo(decodedToken.elo);
-    setAdmin(decodedToken.admin);
-  }, [decodedToken]);
+  
 
   const handlePasswordChange = async () => {
     try {
@@ -38,32 +51,47 @@ const Profilside = () => {
       );
 
       if (response.status === 200) {
-        //sier ifra om passord ble byttet
-        console.log("passord endret");
+        setSuccessMessage("Passordet har blitt endret");
+        setErrorMessage(null);
       } else {
-        //sier ifra om passord ikke ble byttet
-        console.log("Feil, passord ikke byttet");
+        setErrorMessage("Kunne ikke forandre passordet ditt, vennligst prøv igjen");
       }
     } catch (error) {
-      console.error(error);
+      console.error("Kunne ikke forandre passordet:", error);
+      setErrorMessage("Kunne ikke forandre passordet ditt, vennligst prøv igjen");
     }
   };
 
   const handleDeleteKonto = async () => {
+    setErrorMessage(null);
+    if(!confirmed) {
+      window.alert("Du må bekrefte for å kunne slette kontoen");
+      return;
+    }
+    if(!window.confirm("Er du sikker på at du vil slette kontoen din?")){
+      return;
+    }
+
     try {
       const response = await axios.delete(
-        "http://localhost:5000/api/users/profile"
+        "http://localhost:5000/api/users/profile",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
       );
 
-      if (response.status === 200) {
-        //sier ifra om konto ble slettet
-        console.log("konto ble slettet");
-      } else {
-        // sier ifra om kontoen ikke ble slettet
-        console.log("Feil, konto ikke slettet");
+      if (response.status !== 200) {
+        setErrorMessage("Kunne ikke slette kontoen din, vennligst prøv igjen");
+      }else{
+        localStorage.removeItem("token");
+        navigate("/");// sender til logg inn siden
       }
     } catch (error) {
       console.error(error);
+      setErrorMessage("Kunne ikke Slette kontoen din, vennligst prøv igjen");
     }
   };
 
@@ -71,6 +99,8 @@ const Profilside = () => {
     <div className="Profilside-body">
       <div className="profil-container">
         <h1>Profil og Instillinger </h1>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        {successMessage && <p className="success-message">{successMessage}</p>}
         <div>
           <p>Brukernavn: {name}</p>
           <p>Email: {email}</p>
@@ -95,6 +125,12 @@ const Profilside = () => {
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
             />
+          </label>
+        </div>
+        <div>
+          <label>
+            <input type="checkbox" onChange={(e) => setConfirmed(e.target.checked)} />
+            Jeg bekrefter at jeg vil slette kontoen min.
           </label>
         </div>
         <div>

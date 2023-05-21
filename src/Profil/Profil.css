@@ -53,3 +53,8 @@
   .profil-container button:hover {
     background: #020305;
   }
+  
+  .error-message {
+    color: red;
+    font-weight: bold;
+}
