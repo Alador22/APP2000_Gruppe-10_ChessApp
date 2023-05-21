@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Profil.css";
 import jwtDecode from "jwt-decode";
@@ -6,12 +6,21 @@ import jwtDecode from "jwt-decode";
 const Profilside = () => {
   const [password, setPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [elo, setElo] = useState("");
+  const [admin, setAdmin] = useState("");
+
   const token = localStorage.getItem("token");
   const decodedToken = jwtDecode(token);
-  console.log(decodedToken.name);
-  console.log(decodedToken.email);
-  console.log(decodedToken.elo);
-  console.log(decodedToken.admin);
+
+  useEffect(() => {
+    setName(decodedToken.name);
+    setEmail(decodedToken.email);
+    setElo(decodedToken.elo);
+    setAdmin(decodedToken.admin);
+  }, [decodedToken]);
+
   const handlePasswordChange = async () => {
     try {
       const response = await axios.patch(
@@ -62,6 +71,12 @@ const Profilside = () => {
     <div className="Profilside-body">
       <div className="profil-container">
         <h1>Profil og Instillinger </h1>
+        <div>
+          <p>Brukernavn: {name}</p>
+          <p>Email: {email}</p>
+          <p>Elo: {elo}</p>
+          <p>Er administrator?: {admin ? "ja" : "Nei"}</p>
+        </div>
         <div>
           <label>
             Nåværende passord:
