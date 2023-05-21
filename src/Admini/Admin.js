@@ -15,7 +15,7 @@ const AdminPage = () => {
 
     // Replace with the data you want to send to the backend
     const dataToSend = {
-      message: inputData
+      email: inputData
     };
 
     axios.post(apiEndpoint, dataToSend)
