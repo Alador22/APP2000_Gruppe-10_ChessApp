@@ -1,43 +1,96 @@
-import React, { useState } from "react";
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./style.css";
+import jwtDecode from "jwt-decode";
 
 const AdminPage = () => {
-  const [inputData, setInputData] = useState('');
+  const [email, setEmail] = useState("");
+  const [admin, setAdmin] = useState("");
 
-  const handleInputChange = (event) => {
-    setInputData(event.target.value);
+  const token = localStorage.getItem("token");
+  const decodedToken = jwtDecode(token);
+
+  useEffect(() => {
+     //setEmail();
+    setAdmin(decodedToken.admin);
+  }, [decodedToken]);
+
+  const handleAdminChange = async () => {
+    try {
+      const response = await axios.patch(
+        "http://localhost:5000/api/users/admin",
+        {
+          email: email,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        //sier ifra om konto er blitt slettet
+        console.log("Du er blitt Admin Baby!");
+      } else {
+        //sier ifra om kontoen ikke har blitt slettet
+        console.log("Du har ikke lov å bli Admin, ikke Poggers!");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const handleButtonClick = () => {
-    // Replace with your own backend API endpoint
-    const apiEndpoint = process.env.REACT_APP_BACKEND_URL;
+  const handleDeleteKonto = async () => {
+    try {
+        const response = await axios.delete(
+            "http://localhost:5000/api/users/admin",
+            {
+              data: {
+                email: email,
+              },
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+              },
+            }
+          );
 
-    // Replace with the data you want to send to the backend
-    const dataToSend = {
-      email: inputData
-    };
-
-    axios.post(apiEndpoint, dataToSend)
-    .then(response => {
-      console.log('Melding fra Backend: ', response);
-    })
-    .catch(error => {
-      console.error('Error fikk ikke sendt til backend: ', error);
-    });
+      if (response.status === 200) {
+        //sier ifra om konto ble slettet
+        console.log("konto ble slettet");
+      } else {
+        // sier ifra om kontoen ikke ble slettet
+        console.log("Feil, konto ikke slettet");
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
-    <div className="admin-page">
-      <h1>Velkommen til admin siden, her er det bare du som er konge!</h1>
-      <input 
-        type="text" 
-        value={inputData} 
-        onChange={handleInputChange} 
-        placeholder="Skriv epost på kontoen du vil slette her" 
-      />
-      <button onClick={handleButtonClick}>Slett Person</button>
-    </div>
+    <div className="Profilside-body">
+        <div className="profil-container">
+        <div>
+          <label>
+            Epost:
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </label>
+        </div>
+        <div>
+          <button onClick={handleAdminChange}>Gi admin rettigheter</button>
+        </div>
+        <div>
+          <button onClick={handleDeleteKonto}>Slett konto</button>
+        </div>
+        </div>
+      </div>
+    
   );
 };
 

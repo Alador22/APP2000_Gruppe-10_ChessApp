@@ -3,10 +3,13 @@ import { NavLink } from "react-router-dom";
 import "./style.css";
 import DropdownMeny from "./dropdownmeny"
 import { AuthContext } from "../AuthContext";
+import jwtDecode from "jwt-decode";
 
 function Navbar({ isLoggedIn, setIsLoggedIn }) {
-  
-  const { authData } = useContext(AuthContext);
+
+  const token = localStorage.getItem("token");
+  const decodedToken = jwtDecode(token);
+  const { authData, admin } = useContext(AuthContext);
   return (
     <nav>
       <ul>
@@ -20,8 +23,8 @@ function Navbar({ isLoggedIn, setIsLoggedIn }) {
           <NavLink to="/FindMatches">Profilside</NavLink>
         </li>
         <li>
-          <NavLink to="/AdminPage">Administrator</NavLink>
-        </li>
+  {admin && <NavLink to="/AdminPage">Administrator</NavLink>}
+</li>
       </ul>
       {isLoggedIn && (
         <p className="logged-in-text">
