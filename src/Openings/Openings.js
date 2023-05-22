@@ -1,20 +1,61 @@
 import React, { useState, useEffect } from "react";
-
+import jwtDecode from "jwt-decode";
 import axios from "axios";
+import "./style.css";
 
 const Openings = () => {
-  const [inputValue, setInputValue] = useState("");
-  const [openings, setOpenings] = useState([]);
+  const [name, setName] = useState("");
+  const [moves, setMoves] = useState("");
+  const [description, setDescription] = useState("");
+  const [opening, setOpening] = useState(""); // Changed to handle string
 
-  const handleButtonClick = () => {
-    console.log(inputValue);
+  const token = localStorage.getItem("token");
+  const decodedToken = jwtDecode(token);
+
+  const openingSchema = {
+    name: "",
+    moves: "",
+    description: "",
+  };
+  
+  const Openings = () => {
+    const [opening, setOpening] = useState({ ...openingSchema });
+    // ...
+  };
+
+  const handleButtonClick = async () => {
+    try {
+      const response = await axios.post(
+        process.env.REACT_APP_BACKEND_URL + "/openings",
+        opening,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+  
+      
+      console.log(response.data, "Du fikk lagret");
+    } catch (error) {
+      
+      console.error("Error fikk ikke lagret:", error);
+    }
   };
 
   const fetchOpenings = async () => {
     const response = await axios.get(
-        process.env.REACT_APP_BACKEND_URL  + "/api/openings");
-    const data = await response.json();
-    setOpenings(data);
+      process.env.REACT_APP_BACKEND_URL + "/openings",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+
+    setOpening(response.data); // Set the string directly
   };
 
   useEffect(() => {
@@ -26,31 +67,47 @@ const Openings = () => {
       <div className="profil-container">
         <div>
           <label>
-            Epost:
+            Navn på åpning:
             <input
               type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
+              value={opening.name}
+              onChange={(e) => setOpening({ ...opening, name: e.target.value })}
             />
           </label>
         </div>
         <div>
-          <button onClick={handleButtonClick}>Submit</button>
+          <label>
+            Trekk:
+            <input
+              type="text"
+              value={opening.moves}
+              onChange={(e) => setOpening({ ...opening, moves: e.target.value })}
+            />
+          </label>
         </div>
         <div>
-          <button onClick={fetchOpenings}>Fetch Openings</button>
+          <label>
+            Forklaring:
+            <input
+              type="text"
+              value={opening.description}
+              onChange={(e) => setOpening({ ...opening, description: e.target.value })}
+            />
+          </label>
         </div>
         <div>
-          {openings.map((opening, index) => (
-            <div key={index}>
-              <h2>{opening.name}</h2>
-              <p>{opening.moves.join(", ")}</p>
-            </div>
-          ))}
+          <button onClick={handleButtonClick}>Lagre åpninger</button>
+        </div>
+        <div>
+          <button onClick={fetchOpenings}>Hent Åpninger</button>
+        </div>
+        <div>
+          <h2>{opening.name}</h2>
+          <p>{opening.moves}</p>
+          <p>{opening.description}</p>
         </div>
       </div>
     </div>
   );
-};
-
+  }
 export default Openings;
