@@ -3,6 +3,7 @@ import jwtDecode from "jwt-decode";
 import axios from "axios";
 import "./style.css";
 
+
 const Openings = () => {
   const [opening, setOpening] = useState({
     name: "",
@@ -13,11 +14,36 @@ const Openings = () => {
   const token = localStorage.getItem("token");
   const decodedToken = jwtDecode(token);
 
+ 
+// godkjenner at strukturen/moves som blir prøvd å lagret er skrever på riktig måte
+  const validateMoves = (moves) => {
+    const movePattern = /^[a-h][1-8][a-h][1-8]$/;
+    const movesArray = moves.toLowerCase().split(",");// hvis noen skriver med store bokstaver blir de gjort til små og hvert move skal skilles med et komma.
+    if (movesArray.length > 10) {
+      return "Du kan maks legge til 10 trekk i en åpning";
+    }
+    for (let move of movesArray) {
+      if (!movePattern.test(move)) {
+        return "Trekk skal skrives som 'bokstav-tall-bokstav-tall, sånn som e2e4 og skilt med komma e2e4, b2b4";
+      }
+    }
+    return "";
+  };
+
+ 
+
+
   const handleButtonClick = async () => {
+    const errorMessage = validateMoves(opening.moves);
+    if(errorMessage) {
+      alert(errorMessage);
+      return;
+    }
+
     try {
       const response = await axios.post(
         process.env.REACT_APP_BACKEND_URL + "/openings/save",
-        opening,
+        opening,// sender riktig format til databasen
         {
           headers: {
             "Content-Type": "application/json",
@@ -35,7 +61,7 @@ const Openings = () => {
   const fetchUserId = async () => {
     try {
       const response = await axios.get(
-        process.env.REACT_APP_BACKEND_URL + "/user",
+        process.env.REACT_APP_BACKEND_URL + "/user/_id",
         {
           headers: {
             "Content-Type": "application/json",
@@ -74,6 +100,7 @@ const Openings = () => {
   return (
     <div className="Profilside-body">
       <div className="profil-container">
+        <h1>Lag dine egne åpningstrekk</h1>
         <div>
           <label>
             Navn på åpning:
@@ -90,6 +117,7 @@ const Openings = () => {
             <input
               type="text"
               value={opening.moves}
+              placeholder="skriv på denne måten: e2e4, f2f4"
               onChange={(e) => setOpening({ ...opening, moves: e.target.value })}
             />
           </label>
