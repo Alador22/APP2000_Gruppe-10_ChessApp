@@ -4,24 +4,14 @@ import axios from "axios";
 import "./style.css";
 
 const Openings = () => {
-  const [name, setName] = useState("");
-  const [moves, setMoves] = useState("");
-  const [description, setDescription] = useState("");
-  const [opening, setOpening] = useState(""); // Changed to handle string
-
-  const token = localStorage.getItem("token");
-  const decodedToken = jwtDecode(token);
-
-  const openingSchema = {
+  const [opening, setOpening] = useState({
     name: "",
     moves: "",
     description: "",
-  };
-  
-  const Openings = () => {
-    const [opening, setOpening] = useState({ ...openingSchema });
-    // ...
-  };
+  });
+
+  const token = localStorage.getItem("token");
+  const decodedToken = jwtDecode(token);
 
   const handleButtonClick = async () => {
     try {
@@ -36,10 +26,8 @@ const Openings = () => {
         }
       );
   
-      
       console.log(response.data, "Du fikk lagret");
     } catch (error) {
-      
       console.error("Error fikk ikke lagret:", error);
     }
   };
@@ -109,5 +97,6 @@ const Openings = () => {
       </div>
     </div>
   );
-  }
+}
+
 export default Openings;
