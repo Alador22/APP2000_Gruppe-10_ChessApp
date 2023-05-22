@@ -20,7 +20,7 @@ function Navbar({ isLoggedIn, setIsLoggedIn }) {
           <NavLink to="/Practice">Øving</NavLink>
         </li>
         <li>
-          <NavLink to="/FindMatches">Profilside</NavLink>
+          <NavLink to="/Profilside/Openings">Åpninger</NavLink>
         </li>
         <li>
   {admin && <NavLink to="/AdminPage">Administrator</NavLink>}

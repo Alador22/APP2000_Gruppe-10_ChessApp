@@ -9,6 +9,7 @@ import Profilside from "./Profil/Profilside";
 import './App.css';
 import { AuthProvider } from "./AuthContext";
 import AdminPage from "./Admini/Admin";
+import Openings from "./Openings/Openings";
 
 
 function App() {
@@ -39,6 +40,7 @@ return (
         <Route path="/Profilside" element={<Profilside setIsLoggedIn={setIsLoggedIn} />} />
         <Route path="/" element={<HomePage />} />
         <Route path="/AdminPage" element={<AdminPage />} > </Route>
+        <Route path="/ProfilSide/Openings" element={<Openings />} > </Route>
       </Routes>
     ) : (
       // Viser LoginForm-komponenten hvis brukeren ikke er logget inn

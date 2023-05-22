@@ -36,7 +36,7 @@ const Profilside = ({setIsLoggedIn}) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.patch(
-        "http://localhost:5000/api/users/profile",
+        process.env.REACT_APP_BACKEND_URL  + "/users/profile",
         {
           password: password,
           newPass: newPassword,
@@ -66,7 +66,7 @@ const Profilside = ({setIsLoggedIn}) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.delete(
-        "http://localhost:5000/api/users/profile",
+        process.env.REACT_APP_BACKEND_URL  + "/users/profile",
         {
           data: {
             password: deleteAccountPassword,
