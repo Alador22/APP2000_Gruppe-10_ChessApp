@@ -32,23 +32,44 @@ const Openings = () => {
     }
   };
 
-  const fetchOpenings = async () => {
-    const response = await axios.get(
-      process.env.REACT_APP_BACKEND_URL + "/openings",
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Bearer " + token,
-        },
-      }
-    );
-
-    setOpening(response.data); // Set the string directly
+  const fetchUserId = async () => {
+    try {
+      const response = await axios.get(
+        process.env.REACT_APP_BACKEND_URL + "/user",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+  
+      const userId = response.data._Id;
+      return userId;
+    } catch (error) {
+      console.error("Error while fetching user ID:", error);
+    }
   };
-
-  useEffect(() => {
-    fetchOpenings();
-  }, []);
+  
+  const patchOpenings = async () => {
+    try {
+      const userId = await fetchUserId();
+      const response = await axios.patch(
+        process.env.REACT_APP_BACKEND_URL + "/openings/" + userId,
+        opening,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+  
+      setOpening(response.data);
+    } catch (error) {
+      console.error("Error while fetching openings:", error);
+    }
+  };
 
   return (
     <div className="Profilside-body">
@@ -87,7 +108,7 @@ const Openings = () => {
           <button onClick={handleButtonClick}>Lagre åpninger</button>
         </div>
         <div>
-          <button onClick={fetchOpenings}>Hent Åpninger</button>
+          <button onClick={patchOpenings}>Endre på Åpninger</button>
         </div>
         <div>
           <h2>{opening.name}</h2>
