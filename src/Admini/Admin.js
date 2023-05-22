@@ -18,7 +18,7 @@ const AdminPage = () => {
   const handleAdminChange = async () => {
     try {
       const response = await axios.patch(
-        "http://localhost:5000/api/users/admin",
+        process.env.REACT_APP_BACKEND_URL + "/users/admin",
         {
           email: email,
         },
@@ -45,7 +45,7 @@ const AdminPage = () => {
   const handleDeleteKonto = async () => {
     try {
         const response = await axios.delete(
-            "http://localhost:5000/api/users/admin",
+          process.env.REACT_APP_BACKEND_URL + "/users/admin",
             {
               data: {
                 email: email,
