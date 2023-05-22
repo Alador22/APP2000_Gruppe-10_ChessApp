@@ -16,7 +16,7 @@ const Openings = () => {
   const handleButtonClick = async () => {
     try {
       const response = await axios.post(
-        process.env.REACT_APP_BACKEND_URL + "/openings",
+        process.env.REACT_APP_BACKEND_URL + "/openings/save",
         opening,
         {
           headers: {
