@@ -79,9 +79,8 @@ const Openings = () => {
   
   const patchOpenings = async () => {
     try {
-      const userId = await fetchUserId();
       const response = await axios.patch(
-        process.env.REACT_APP_BACKEND_URL + "/openings/" + userId,
+        process.env.REACT_APP_BACKEND_URL + "/openings/" + selectedOpeningId,
         opening,
         {
           headers: {
@@ -96,6 +95,39 @@ const Openings = () => {
       console.error("Error while fetching openings:", error);
     }
   };
+
+  let openingIds = [];
+
+  const [openings, setOpenings] = useState([]);
+
+  const fetchOpenings = async () => {
+    try {
+      const response = await axios.get(
+        process.env.REACT_APP_BACKEND_URL + "/openings",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
+  
+      const data = response.data;
+
+      // Combine the default and custom openings into one array
+      const allOpenings = [...data.defaultOpenings, ...data.customOpenings];
+
+      // Update the state with the fetched openings
+      setOpenings(allOpenings);
+    } catch (error) {
+      console.error('Failed to fetch openings:', error);
+    }
+  };
+  const [selectedOpeningId, setSelectedOpeningId] = useState(null);
+
+const handleOpeningClick = (opening) => {
+  setSelectedOpeningId(opening._id);
+};
 
   return (
     <div className="Profilside-body">
@@ -139,10 +171,20 @@ const Openings = () => {
           <button onClick={patchOpenings}>Endre på Åpninger</button>
         </div>
         <div>
-          <h2>{opening.name}</h2>
-          <p>{opening.moves}</p>
-          <p>{opening.description}</p>
+          <button onClick={fetchOpenings}>Henter alle åpninger</button>
         </div>
+        <div className="Ope">
+  {openings.map((opening) => (
+    <div 
+      key={opening._id} 
+      onClick={() => handleOpeningClick(opening)}
+    >
+      <h2>{opening.name}</h2>
+      <p>{opening.moves}</p>
+      <p>{opening.description}</p>
+    </div>
+  ))}
+</div>
       </div>
     </div>
   );

@@ -53,3 +53,18 @@
   .profil-container button:hover {
     background: #020305;
   }
+  .Ope {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background-color: #fff;
+  }
+  
+  .Ope div {
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+    flex-basis: calc(25% - 20px);
+    box-sizing: border-box;
+  }
+  

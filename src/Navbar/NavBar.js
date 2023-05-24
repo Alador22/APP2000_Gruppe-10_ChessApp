@@ -23,7 +23,7 @@ function Navbar({ isLoggedIn, setIsLoggedIn }) {
           <NavLink to="/Profilside/Openings">Åpninger</NavLink>
         </li>
         <li>
-  {admin && <NavLink to="/AdminPage">Administrator</NavLink>}
+  {<NavLink to="/AdminPage">Administrator</NavLink>}
 </li>
       </ul>
       {isLoggedIn && (
