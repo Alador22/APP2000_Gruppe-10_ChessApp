@@ -80,7 +80,6 @@ const login = async (req, res, next) => {
   const { email, password } = req.body;
 
   //sjekker om brukeren finnes i databasen
-
   let alreadyUser = await User.findOne({ email: email });
 
   if (!alreadyUser) {
@@ -90,6 +89,7 @@ const login = async (req, res, next) => {
     );
     return next(error);
   }
+
   //vi bruker bcrypt-biblioteket for å sjekke om passordet som er gitt samsvarer med den hashed passordet som er lagret i databasen
   let isValidPassword = false;
   try {
@@ -261,7 +261,6 @@ const updateAdminRole = async (req, res, next) => {
     }
     response = "brukeren er nå administrator";
   }
-
   res.status(200).json(response);
 };
 
