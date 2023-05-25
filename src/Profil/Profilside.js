@@ -103,7 +103,7 @@ const Profilside = ({setIsLoggedIn}) => {
           <p>Brukernavn: {name}</p>
           <p>Email: {email}</p>
           <p>Elo: {elo}</p>
-          {admin && <p>Admin: Ja</p>}
+          <p>Status: {admin ? 'Admin' : 'Player'}</p>
         </div>
         <div>
           <label>

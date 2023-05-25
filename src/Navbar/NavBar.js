@@ -9,7 +9,8 @@ function Navbar({ isLoggedIn, setIsLoggedIn }) {
 
   const token = localStorage.getItem("token");
   const decodedToken = jwtDecode(token);
-  const { authData, admin } = useContext(AuthContext);
+  const {authData} =useContext(AuthContext);
+  const {admin} = authData;
   return (
     <nav>
       <ul>
@@ -23,15 +24,10 @@ function Navbar({ isLoggedIn, setIsLoggedIn }) {
           <NavLink to="/Profilside/Openings">Åpninger</NavLink>
         </li>
         <li>
-  {<NavLink to="/AdminPage">Administrator</NavLink>}
+  {admin ? <NavLink to="/AdminPage">Administrator</NavLink> : <></>}
 </li>
       </ul>
-      {isLoggedIn && (
-        <p className="logged-in-text">
-        Logget inn som: {authData.email}
-      </p>
-      )}
-      <DropdownMeny isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <DropdownMeny isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} authData={authData} />
     </nav>
   );
 }
