@@ -115,7 +115,7 @@ const Openings = () => {
       const data = response.data;
 
       // Combine the default and custom openings into one array
-      const allOpenings = [...data.defaultOpenings, ...data.customOpenings];
+      const allOpenings = [...data.customOpenings];
 
       // Update the state with the fetched openings
       setOpenings(allOpenings);
@@ -125,9 +125,43 @@ const Openings = () => {
   };
   const [selectedOpeningId, setSelectedOpeningId] = useState(null);
 
-const handleOpeningClick = (opening) => {
-  setSelectedOpeningId(opening._id);
-};
+  const handleOpeningClick = (opening) => {
+    if (opening._id !== selectedOpeningId) {
+      setSelectedOpeningId(opening._id);
+      console.log(opening._id);
+    }
+  };
+
+  const deleteOpening = async () => {
+    const confirmDelete = window.confirm("Sikker på at du vil slette åpeningen, det er umulig å få den tilbake");
+  
+    if (confirmDelete) {
+      try {
+        const response = await axios.delete(
+          process.env.REACT_APP_BACKEND_URL + "/openings/" + selectedOpeningId,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          }
+        );
+  
+        // You might want to remove the deleted opening from your state here
+        // so it disappears from the UI without needing to refresh the page
+        setOpenings(openings.filter(opening => opening._id !== selectedOpeningId));
+  
+        console.log("Sletting gjennomført:", response);
+      } catch (error) {
+        console.error("Error during deletion:", error);
+      }
+    } else {
+      // User clicked Cancel, do nothing
+      console.log("Sletting kanselert.");
+    }
+  };
+  
+  
 
   return (
     <div className="Profilside-body">
@@ -164,6 +198,7 @@ const handleOpeningClick = (opening) => {
             />
           </label>
         </div>
+        <div className="knapperOpe">
         <div>
           <button onClick={handleButtonClick}>Lagre åpninger</button>
         </div>
@@ -172,6 +207,10 @@ const handleOpeningClick = (opening) => {
         </div>
         <div>
           <button onClick={fetchOpenings}>Henter alle åpninger</button>
+        </div>
+        <div>
+          <button onClick={deleteOpening}>Slett Åpning</button>
+        </div>
         </div>
         <div className="Ope">
   {openings.map((opening) => (
@@ -185,6 +224,7 @@ const handleOpeningClick = (opening) => {
     </div>
   ))}
 </div>
+
       </div>
     </div>
   );
