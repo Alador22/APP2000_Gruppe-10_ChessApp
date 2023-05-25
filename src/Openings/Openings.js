@@ -13,6 +13,7 @@ const Openings = () => {
 
   const token = localStorage.getItem("token");
   const decodedToken = jwtDecode(token);
+  const [dataChanged, setDataChanged] = useState(false);
 
  
 // godkjenner at strukturen/moves som blir prøvd å lagret er skrever på riktig måte
@@ -53,6 +54,7 @@ const Openings = () => {
       );
   
       console.log(response.data, "Du fikk lagret");
+      setDataChanged(!dataChanged);
     } catch (error) {
       console.error("Error fikk ikke lagret:", error);
     }
@@ -90,11 +92,18 @@ const Openings = () => {
         }
       );
   
-      setOpening(response.data);
+      // Reset the opening state to its initial state
+      setOpening({
+        name: "",
+        moves: "",
+        description: "",
+      });
+      setDataChanged(!dataChanged);
     } catch (error) {
       console.error("Error while fetching openings:", error);
     }
   };
+  
 
   let openingIds = [];
 
@@ -152,6 +161,7 @@ const Openings = () => {
         setOpenings(openings.filter(opening => opening._id !== selectedOpeningId));
   
         console.log("Sletting gjennomført:", response);
+        setDataChanged(!dataChanged);
       } catch (error) {
         console.error("Error during deletion:", error);
       }
@@ -161,7 +171,9 @@ const Openings = () => {
     }
   };
   
-  
+  useEffect(() => {
+    fetchOpenings();
+  }, [dataChanged]);
 
   return (
     <div className="Profilside-body">
