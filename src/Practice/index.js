@@ -3,7 +3,7 @@ import Chessboard from 'chessboardjsx';
 import { Chess } from 'chess.js';
 import './style2.css';
 import { calculateBestMove } from './ChessAi';
-import Openings from './Openings';
+import Openings from './SideOpenings';
 
 const Practice = () => {
   const [chess] = useState(new Chess());
