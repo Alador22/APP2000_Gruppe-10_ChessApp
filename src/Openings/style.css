@@ -67,4 +67,30 @@
     flex-basis: calc(25% - 20px);
     box-sizing: border-box;
   }
+  .knapperOpe {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; 
+  }
+  
+  .knapperOpe div {
+    margin: 10px; 
+  }
+  
+
+  .knapperOpe button {
+    padding: 10px 20px; 
+    border: 2px solid #000; 
+    margin: 10px; 
+    border-radius: 5px; 
+    background-color: #fff; 
+    color: #000; 
+    font-size: 16px; 
+    cursor: pointer; 
+  }
+  
+  .knapperOpe button:hover {
+    background-color: #000; 
+    color: #fff; 
+  }
   
