@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
-
+//schema på hvordan en åpning skal se ut i databasen
 const openingSchema = new Schema({
   name: { type: String, required: true, trim: true },
   moves: { type: String, required: true },

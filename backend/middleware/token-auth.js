@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
-const HttpError = require("../models/http-error");
+const createError = require("http-errors");
 
+//her bruker vi jsonwebtoken-biblioteket til å autentisere brukeren ved å sjekke den tokenen de sender med hver request
 const checkToken = (req, res, next) => {
   if (req.method === "OPTIONS") {
     return next();
@@ -8,7 +9,7 @@ const checkToken = (req, res, next) => {
   try {
     const token = req.headers.authorization.split(" ")[1];
     if (!token) {
-      throw new HttpError("Ugyldige inndata, vennligst prøv igjen.", 422);
+      throw createError(422, "Ugyldige inndata, vennligst prøv igjen.");
     }
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     req.userData = {
@@ -19,7 +20,7 @@ const checkToken = (req, res, next) => {
     };
     next();
   } catch (err) {
-    const error = new HttpError("authentication failed", 500);
+    const error = createError(401, "autentisering mislyktes");
     return next(error);
   }
 };

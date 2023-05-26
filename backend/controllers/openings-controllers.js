@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator");
-const HttpError = require("../models/http-error");
 const Opening = require("../models/opening");
+const createError = require("http-errors");
 
 // Får alle åpninger av brukeren
 const getOpenings = async (req, res, next) => {
@@ -13,9 +13,9 @@ const getOpenings = async (req, res, next) => {
     });
     customOpenings = await Opening.find({ creator_id: creatorId });
   } catch (err) {
-    const error = new HttpError(
-      "Henting av åpninger mislyktes, Prøv igjen senere.",
-      500
+    const error = createError(
+      500,
+      "Henting av åpninger mislyktes, Prøv igjen senere."
     );
     return next(error);
   }
@@ -39,7 +39,7 @@ const createOpening = async (req, res, next) => {
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return next(new HttpError("Ugyldige inndata! vennligst prøv igjen.", 422));
+    return next(createError(422, "Ugyldige inndata! vennligst prøv igjen."));
   }
   // Sjekker om åpning allerede eksisterer
 
@@ -49,9 +49,9 @@ const createOpening = async (req, res, next) => {
   ]);
 
   if (findingOpening) {
-    const error = new HttpError(
-      "Åpningen eksisterer allerede, prøv igjen med et annet navn.",
-      422
+    const error = createError(
+      409,
+      "Åpningen eksisterer allerede, prøv igjen med et annet navn."
     );
     return next(error);
   }
@@ -68,9 +68,9 @@ const createOpening = async (req, res, next) => {
   try {
     await Opening.create(createdOpening);
   } catch (err) {
-    const error = new HttpError(
-      "kunne ikke opprette åpning, prøv igjen senere.",
-      500
+    const error = createError(
+      500,
+      "kunne ikke opprette åpning, prøv igjen senere."
     );
     return next(error);
   }
@@ -87,7 +87,7 @@ const updateOpening = async (req, res, next) => {
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return next(new HttpError("Ugyldige inndata, vennligst prøv igjen.", 422));
+    return next(createError(422, "Ugyldige inndata, vennligst prøv igjen."));
   }
 
   let opening = await Opening.findOne().and([
@@ -96,9 +96,9 @@ const updateOpening = async (req, res, next) => {
   ]);
 
   if (!opening) {
-    const error = new HttpError(
-      "Kunne ikke finne åpningen for det angitte navnet.",
-      404
+    const error = createError(
+      404,
+      "Kunne ikke finne åpningen for det angitte navnet."
     );
     return next(error);
   }
@@ -110,9 +110,9 @@ const updateOpening = async (req, res, next) => {
   try {
     await Opening.create(opening);
   } catch (err) {
-    const error = new HttpError(
-      "Noe gikk galt, kunne ikke oppdatere åpningen.",
-      500
+    const error = createError(
+      500,
+      "Noe gikk galt, kunne ikke oppdatere åpningen."
     );
     return next(error);
   }
@@ -131,9 +131,9 @@ const deleteOpening = async (req, res, next) => {
   ]);
 
   if (!deleteOpening) {
-    const error = new HttpError(
-      "Kunne ikke finne åpningen for det angitte navnet.",
-      404
+    const error = createError(
+      404,
+      "Kunne ikke finne åpningen for det angitte navnet."
     );
     return next(error);
   }
@@ -141,9 +141,9 @@ const deleteOpening = async (req, res, next) => {
   try {
     deleteOpening = await Opening.deleteOne({ _id });
   } catch (err) {
-    const error = new HttpError(
-      "Noe gikk galt, kunne ikke slette åpningen.",
-      404
+    const error = createError(
+      500,
+      "Noe gikk galt, kunne ikke slette åpningen."
     );
     return next(error);
   }

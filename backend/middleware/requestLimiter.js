@@ -1,21 +1,21 @@
 const rateLimit = require("express-rate-limit");
-
+//vi brukte express rate limit for å begrense mengden forespørsler sendt av en enkelt bruker for å forhindre utilsiktede høyfrekvent forespørsler fra brukere
 const userInteractionLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minute
-  max: 15, // Limit each IP to 15 requests per minute
+  windowMs: 1 * 60 * 1000, // 1 minutt
+  max: 15, // Begrenser hver IP adresse til 15 forespørsler per minutt
   message:
-    "Too many requests sent from this IP, please try again after 1 minute",
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    "For mange forespørsler sendt fra denne IP-adressen, prøv igjen om 1 minutt",
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 
 const matchesLimiter = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minute
-  max: 100, // Limit each IP to 100 requests per minute
+  windowMs: 1 * 60 * 1000, // 1 minutt
+  max: 30, // Begrenser hver IP adresse til 30 forespørsler per minutt
   message:
-    "Too many requests sent from this IP, please try again after 1 minute",
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    "For mange forespørsler sendt fra denne IP-adressen, prøv igjen etter 1 minutt",
+  standardHeaders: true,
+  legacyHeaders: false,
 });
 exports.userInteractionLimiter = userInteractionLimiter;
 exports.matchesLimiter = matchesLimiter;

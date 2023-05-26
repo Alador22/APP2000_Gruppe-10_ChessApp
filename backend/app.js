@@ -1,13 +1,16 @@
+//hovedbibliotekene som brukes på backend
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 
+//ruter til alle filene
 const usersRoutes = require("./routes/users-routes");
 const openingsRoutes = require("./routes/openings-routes");
 const gamesRoutes = require("./routes/games-routes");
 const userLimiter = require("./middleware/requestLimiter");
-const HttpError = require("./models/http-error");
+const createError = require("http-errors");
 
+//biblioteker for å koble sammen frontend og backend
 const cors = require("cors");
 const path = require("path");
 
@@ -16,6 +19,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(express.static(path.join("public")));
 
+//cors brukes kun på produksjonssiden av koden for å gjøre det enklere å teste kode, men webserveren trenger det ikke siden vi har en "Combined App"
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -25,16 +29,17 @@ app.use((req, res, next) => {
   next();
 });
 
+//vår 3 hovedruter med Request Limiter for å kontrollere hvor mange forespørsler en bruker sender i hver rute
 app.use("/api/users", userLimiter.userInteractionLimiter, usersRoutes);
 app.use("/api/openings", userLimiter.userInteractionLimiter, openingsRoutes);
 app.use("/api/games", userLimiter.matchesLimiter, gamesRoutes);
-//vi bruker Path bibliotek for å kjøre Public-filen som frontend
+
 app.use((req, res, next) => {
   res.sendFile(path.resolve(__dirname, "public", "index.html"));
 });
 
 app.use((req, res, next) => {
-  const error = new HttpError("Could not find this route.", 404);
+  const error = createError(404, "Could not find this route.");
   throw error;
 });
 

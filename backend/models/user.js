@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
 const Schema = mongoose.Schema;
-//mongoose gir muligheten for å lage en skjema for hvordan user Collection skal se ut
+//mongoose gir muligheten for å lage en skjema for hvordan bruker Collection skal se ut
 
 const userSchema = new Schema({
   name: { type: String, required: true, trim: true },
@@ -13,6 +13,7 @@ const userSchema = new Schema({
   admin: { type: Boolean },
 });
 
+//vi bruker mongoose unique validator for å validere inndata
 userSchema.plugin(uniqueValidator);
 
 const User = mongoose.model("User", userSchema);
