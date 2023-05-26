@@ -31,22 +31,16 @@ const SideOpenings = ({ chess, setPosition, addMoveToList, showOpenings }) => {
             },
           }
         );
-    
+  
         const data = response.data;
         const allOpenings = data.customOpenings.map(opening => {
-          // Check if moves is a string and contains at least one comma
-          if (typeof opening.moves === 'string' && opening.moves.includes(', ')) {
-            return {
-              ...opening,
-              moves: opening.moves.split(', ')
-            };
-          } else {
-            // If not, return the opening as is
-            return opening;
-          }
+          return {
+            name: opening.name,
+            moves: opening.moves.split(',')
+          };
         });
         setCustomOpenings(allOpenings);
-    
+  
         // Log the value of customOpenings
         console.log(customOpenings);
       } catch (error) {

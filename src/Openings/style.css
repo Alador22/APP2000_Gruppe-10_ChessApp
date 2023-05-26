@@ -57,7 +57,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-    background-color: #fff;
+    background-color: #588870;
   }
   
   .Ope div {
@@ -66,6 +66,11 @@
     margin: 10px;
     flex-basis: calc(25% - 20px);
     box-sizing: border-box;
+    color: #000000;
+  }
+  .Ope div:hover {
+    
+    background-color: #c4fcd6; 
   }
   .knapperOpe {
     display: flex;
