@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
 import "./style.css";
+import OpeningsContext from '../Practice/OpeningContext';
+
 
 
 const Openings = () => {
@@ -10,6 +12,7 @@ const Openings = () => {
     moves: "",
     description: "",
   });
+  
 
   const token = localStorage.getItem("token");
   const decodedToken = jwtDecode(token);
@@ -176,6 +179,7 @@ const Openings = () => {
   }, [dataChanged]);
 
   return (
+    <OpeningsContext.Provider value={openings}>
     <div className="Profilside-body">
       <div className="profil-container">
         <h1>Lag dine egne åpningstrekk</h1>
@@ -239,6 +243,7 @@ const Openings = () => {
 
       </div>
     </div>
+    </OpeningsContext.Provider>
   );
 }
 
