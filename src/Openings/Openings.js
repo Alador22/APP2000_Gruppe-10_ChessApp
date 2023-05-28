@@ -1,12 +1,10 @@
-//creator: perry stendal og jørgen tinnesand combinert
+//creator: perry stendal og jørgen tinnesand combinert, brukt chatGpt for å feilsøke
 import React, { useState, useEffect } from "react";
-import jwtDecode from "jwt-decode";
 import axios from "axios";
 import "./style.css";
 import OpeningsContext from '../Practice/OpeningContext';
 
 
-// Hele siden laget av Jørgen, brukt chatGpt for å feilsøke
 const Openings = () => {
   const [opening, setOpening] = useState({
     name: "",
@@ -16,10 +14,9 @@ const Openings = () => {
   
 
   const token = localStorage.getItem("token");
-  const decodedToken = jwtDecode(token);
   const [dataChanged, setDataChanged] = useState(false);
 
- 
+ //
 // godkjenner at strukturen/moves som blir prøvd å lagret er skrever på riktig måte
   const validateMoves = (moves) => {
     const movePattern = /^[a-h][1-8][a-h][1-8]$/;
@@ -63,25 +60,6 @@ const Openings = () => {
       console.error("Error fikk ikke lagret:", error);
     }
   };
-
-  const fetchUserId = async () => {
-    try {
-      const response = await axios.get(
-        process.env.REACT_APP_BACKEND_URL + "/user/_id",
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Bearer " + token,
-          },
-        }
-      );
-  
-      const userId = response.data._Id;
-      return userId;
-    } catch (error) {
-      console.error("Error while fetching user ID:", error);
-    }
-  };
   
   const patchOpenings = async () => {
     try {
@@ -108,8 +86,6 @@ const Openings = () => {
     }
   };
   
-
-  let openingIds = [];
 
   const [openings, setOpenings] = useState([]);
 
