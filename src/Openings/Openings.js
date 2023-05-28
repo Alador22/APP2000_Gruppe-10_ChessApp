@@ -5,7 +5,7 @@ import "./style.css";
 import OpeningsContext from '../Practice/OpeningContext';
 
 
-
+// Hele siden laget av Jørgen, brukt chatGpt for å feilsøke
 const Openings = () => {
   const [opening, setOpening] = useState({
     name: "",

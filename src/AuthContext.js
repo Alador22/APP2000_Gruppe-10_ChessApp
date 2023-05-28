@@ -7,6 +7,8 @@ export const AuthProvider = ({ children }) => {
   const [authData, setAuthData] = useState(null);
   const [admin, setAdmin] = useState(false);
 
+
+  // Laget av Jørgen og ChatGPT 
   // Decoder JWT og henter ut informasjon
   useEffect(() => {
     const token = localStorage.getItem('token');
