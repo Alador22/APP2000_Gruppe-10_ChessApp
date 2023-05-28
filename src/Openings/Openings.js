@@ -1,3 +1,4 @@
+//creator: perry stendal og jørgen tinnesand combinert
 import React, { useState, useEffect } from "react";
 import jwtDecode from "jwt-decode";
 import axios from "axios";
