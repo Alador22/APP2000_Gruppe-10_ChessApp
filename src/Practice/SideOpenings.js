@@ -17,7 +17,7 @@ const openings = [
 const SideOpenings = ({ chess, setPosition, addMoveToList, showOpenings }) => {
   const [customOpenings, setCustomOpenings] = useState([]);
   const token = localStorage.getItem("token");
-  const decodedToken = jwtDecode(token); // Assuming the token is stored in the context
+  //const decodedToken = jwtDecode(token); // Assuming the token is stored in the context
 // UseEffect laget av Jørgen + ChatBot for troubleshooting
   useEffect(() => {
     const fetchOpenings = async () => {

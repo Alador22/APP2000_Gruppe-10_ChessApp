@@ -36,10 +36,10 @@ const LoginForm = ({ onLogin }) => {
       console.log(response.data);
       const token = response.data.token;
       localStorage.setItem("token", token);
-      const decodedToken = jwtDecode(token);
-      setAuthData(decodedToken); // Plasserer JWT
+      //const decodedToken = jwtDecode(token);
+      //setAuthData(decodedToken); // Plasserer JWT
       onLogin(); // Oppdater innloggingsstatus til App-komponenten
-      if (decodedToken) // Sørger for at du har en token føre den sender deg vidre
+      //if (decodedToken) // Sørger for at du har en token føre den sender deg vidre
       navigate("HomePage"); // etter vellykket innlogging, så blir brukeren omderigert til HomePage.
     } catch (error) {
       console.error(error);
