@@ -1,15 +1,17 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
-import jwtDecode from 'jwt-decode';
+import jwtDecode from "jwt-decode";
 import "./LoginForm.css";
 import { useNavigate } from "react-router-dom";
-import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "../shared/util/validators";
+import {
+  VALIDATOR_EMAIL,
+  VALIDATOR_MINLENGTH,
+} from "../shared/util/validators";
 import { AuthContext } from "../AuthContext";
-
 
 // Definerer tilstander login / registrering
 const LoginForm = ({ onLogin }) => {
-  const {setAuthData} = useContext(AuthContext);
+  const { setAuthData } = useContext(AuthContext);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,15 +20,13 @@ const LoginForm = ({ onLogin }) => {
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
   const navigate = useNavigate();
 
-
   // Funksjon for å sende innloggingen
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
     try {
       const response = await axios.post(
-        process.env.REACT_APP_BACKEND_URL + "/users/login",
-        { email, 
-          password },
+        `${process.env.REACT_APP_BACKEND_URL}/users/login`,
+        { email, password },
         {
           headers: {
             "Content-Type": "application/json",
@@ -36,16 +36,16 @@ const LoginForm = ({ onLogin }) => {
       console.log(response.data);
       const token = response.data.token;
       localStorage.setItem("token", token);
-      const decodedToken = jwtDecode(token);
-      setAuthData(decodedToken); // Plasserer JWT
+      //const decodedToken = jwtDecode(token);
+      //setAuthData(decodedToken); // Plasserer JWT
       onLogin(); // Oppdater innloggingsstatus til App-komponenten
-      if (decodedToken) // Sørger for at du har en token føre den sender deg vidre
+      // if (decodedToken)
+      // Sørger for at du har en token føre den sender deg vidre
       navigate("HomePage"); // etter vellykket innlogging, så blir brukeren omderigert til HomePage.
     } catch (error) {
       console.error(error);
     }
   };
-
 
   // Funksjon for å sende registreringen
   const handleRegisterSubmit = async (event) => {
@@ -60,7 +60,7 @@ const LoginForm = ({ onLogin }) => {
     }
     try {
       const response = await axios.post(
-        process.env.REACT_APP_BACKEND_URL + "/users/signup",
+        `${process.env.REACT_APP_BACKEND_URL}/users/signup`,
         { name, email, password },
         {
           headers: {
@@ -68,11 +68,11 @@ const LoginForm = ({ onLogin }) => {
           },
         }
       );
-     // Etter du har registrert deg så lagres JWT lokalt
-    localStorage.setItem("token", response.data.token);
+      // Etter du har registrert deg så lagres JWT lokalt
+      localStorage.setItem("token", response.data.token);
 
-    console.log(response.data);
-    setRegistrationSuccessful(true);
+      console.log(response.data);
+      setRegistrationSuccessful(true);
     } catch (error) {
       console.error(error);
     }
@@ -130,7 +130,7 @@ const LoginForm = ({ onLogin }) => {
             name="password"
             value={password}
             validators={[VALIDATOR_MINLENGTH(6)]}
-          errorText="Vær så snill og lag passordet 6 karakterer langt!"
+            errorText="Vær så snill og lag passordet 6 karakterer langt!"
             onChange={(e) => setPassword(e.target.value)}
           />
         </label>
@@ -177,5 +177,5 @@ const LoginForm = ({ onLogin }) => {
       </form>
     </div>
   );
-}
+};
 export default LoginForm;

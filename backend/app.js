@@ -38,11 +38,6 @@ app.use((req, res, next) => {
   res.sendFile(path.resolve(__dirname, "public", "index.html"));
 });
 
-app.use((req, res, next) => {
-  const error = createError(404, "Could not find this route.");
-  throw error;
-});
-
 app.use((error, req, res, next) => {
   if (res.headerSent) {
     return next(error);

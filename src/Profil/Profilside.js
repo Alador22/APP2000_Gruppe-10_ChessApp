@@ -8,7 +8,7 @@ import "./Profil.css";
 import jwtDecode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 
-const Profilside = ({setIsLoggedIn}) => {
+const Profilside = ({ setIsLoggedIn }) => {
   const [password, setPassword] = useState("");
   const [deleteAccountPassword, setDeleteAccountPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -16,31 +16,31 @@ const Profilside = ({setIsLoggedIn}) => {
   const [email, setEmail] = useState("");
   const [elo, setElo] = useState("");
   const [admin, setAdmin] = useState("");
-  const [errorMessage, setErrorMessage] =useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [successMessage, setSuccessMessage] = useState(null);
   const navigate = useNavigate();
 
-
-  useEffect (() => {
-    try{
+  useEffect(() => {
+    try {
       const token = localStorage.getItem("token");
       const decodedToken = jwtDecode(token);
       setName(decodedToken.name);
       setEmail(decodedToken.email);
       setElo(decodedToken.elo);
       setAdmin(decodedToken.admin);
-    }catch (error) {
+    } catch (error) {
       console.error("Det er ikke mulig å decode token:", error);
-      setErrorMessage("Det var ikke mulig å hente din informasjon, vennligst log in på nytt");
+      setErrorMessage(
+        "Det var ikke mulig å hente din informasjon, vennligst log in på nytt"
+      );
     }
   }, []); // tomt array siden effekten bare kjører en gang etter første render.
-
 
   const handlePasswordChange = async () => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.patch(
-        process.env.REACT_APP_BACKEND_URL  + "/users/profile",
+        `${process.env.REACT_APP_BACKEND_URL}/users/profile`,
         {
           password: password,
           newPass: newPassword,
@@ -57,11 +57,15 @@ const Profilside = ({setIsLoggedIn}) => {
         setSuccessMessage("Passordet har blitt endret");
         setErrorMessage(null);
       } else {
-        setErrorMessage("Kunne ikke forandre passordet ditt, vennligst prøv igjen");
+        setErrorMessage(
+          "Kunne ikke forandre passordet ditt, vennligst prøv igjen"
+        );
       }
     } catch (error) {
       console.error("Kunne ikke forandre passordet:", error);
-      setErrorMessage("Kunne ikke forandre passordet ditt, vennligst prøv igjen");
+      setErrorMessage(
+        "Kunne ikke forandre passordet ditt, vennligst prøv igjen"
+      );
     }
   };
 
@@ -70,12 +74,12 @@ const Profilside = ({setIsLoggedIn}) => {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.delete(
-        process.env.REACT_APP_BACKEND_URL  + "/users/profile",
+        `${process.env.REACT_APP_BACKEND_URL}/users/profile`,
         {
           data: {
             password: deleteAccountPassword,
-        },
-        
+          },
+
           headers: {
             "Content-Type": "application/json",
             Authorization: "Bearer " + token,
@@ -86,10 +90,9 @@ const Profilside = ({setIsLoggedIn}) => {
       if (response.status === 200) {
         localStorage.removeItem("token");
         setIsLoggedIn(false);
-        navigate("/");// sender til logg inn siden
-      }else{
+        navigate("/"); // sender til logg inn siden
+      } else {
         setErrorMessage("Kunne ikke slette kontoen din, vennligst prøv igjen");
-
       }
     } catch (error) {
       console.error(error);
@@ -107,7 +110,7 @@ const Profilside = ({setIsLoggedIn}) => {
           <p>Brukernavn: {name}</p>
           <p>Email: {email}</p>
           <p>Elo: {elo}</p>
-          <p>Status: {admin ? 'Admin' : 'Player'}</p>
+          <p>Status: {admin ? "Admin" : "Player"}</p>
         </div>
         <div>
           <label>
@@ -136,9 +139,9 @@ const Profilside = ({setIsLoggedIn}) => {
           <label>
             Du må Skrive inn passordet ditt for å kunne slette kontoen din:
             <input
-            type="password"
-            value={deleteAccountPassword}
-            onChange={(e) => setDeleteAccountPassword(e.target.value)}
+              type="password"
+              value={deleteAccountPassword}
+              onChange={(e) => setDeleteAccountPassword(e.target.value)}
             />
           </label>
         </div>

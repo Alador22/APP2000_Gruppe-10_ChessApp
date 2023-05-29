@@ -62,8 +62,7 @@ const signup = async (req, res, next) => {
         admin: newUser.admin,
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "1h" },
-      { algorithm: "RS256" }
+      { expiresIn: "1h" }
     );
   } catch (err) {
     const error = createError(
@@ -120,8 +119,7 @@ const login = async (req, res, next) => {
         admin: alreadyUser.admin,
       },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "1h" },
-      { algorithm: "RS256" }
+      { expiresIn: "1h" }
     );
   } catch (err) {
     const error = createError(

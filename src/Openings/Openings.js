@@ -2,8 +2,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./style.css";
-import OpeningsContext from '../Practice/OpeningContext';
-
+import OpeningsContext from "../Practice/OpeningContext";
 
 const Openings = () => {
   const [opening, setOpening] = useState({
@@ -11,16 +10,15 @@ const Openings = () => {
     moves: "",
     description: "",
   });
-  
 
   const token = localStorage.getItem("token");
   const [dataChanged, setDataChanged] = useState(false);
 
- //
-// godkjenner at strukturen/moves som blir prøvd å lagret er skrever på riktig måte
+  //
+  // godkjenner at strukturen/moves som blir prøvd å lagret er skrever på riktig måte
   const validateMoves = (moves) => {
     const movePattern = /^[a-h][1-8][a-h][1-8]$/;
-    const movesArray = moves.toLowerCase().split(",");// hvis noen skriver med store bokstaver blir de gjort til små og hvert move skal skilles med et komma.
+    const movesArray = moves.toLowerCase().split(","); // hvis noen skriver med store bokstaver blir de gjort til små og hvert move skal skilles med et komma.
     if (movesArray.length > 10) {
       return "Du kan maks legge til 10 trekk i en åpning";
     }
@@ -32,20 +30,17 @@ const Openings = () => {
     return "";
   };
 
- 
-
-
   const handleButtonClick = async () => {
     const errorMessage = validateMoves(opening.moves);
-    if(errorMessage) {
+    if (errorMessage) {
       alert(errorMessage);
       return;
     }
 
     try {
       const response = await axios.post(
-        process.env.REACT_APP_BACKEND_URL + "/openings/save",
-        opening,// sender riktig format til databasen
+        `${process.env.REACT_APP_BACKEND_URL}/openings/save`,
+        opening, // sender riktig format til databasen
         {
           headers: {
             "Content-Type": "application/json",
@@ -53,18 +48,18 @@ const Openings = () => {
           },
         }
       );
-  
+
       console.log(response.data, "Du fikk lagret");
       setDataChanged(!dataChanged);
     } catch (error) {
       console.error("Error fikk ikke lagret:", error);
     }
   };
-  
+
   const patchOpenings = async () => {
     try {
       const response = await axios.patch(
-        process.env.REACT_APP_BACKEND_URL + "/openings/" + selectedOpeningId,
+        `${process.env.REACT_APP_BACKEND_URL}/openings/${selectedOpeningId}`,
         opening,
         {
           headers: {
@@ -73,7 +68,7 @@ const Openings = () => {
           },
         }
       );
-  
+
       // Reset the opening state to its initial state
       setOpening({
         name: "",
@@ -85,14 +80,13 @@ const Openings = () => {
       console.error("Error while fetching openings:", error);
     }
   };
-  
 
   const [openings, setOpenings] = useState([]);
 
   const fetchOpenings = async () => {
     try {
       const response = await axios.get(
-        process.env.REACT_APP_BACKEND_URL + "/openings",
+        `${process.env.REACT_APP_BACKEND_URL}/openings`,
         {
           headers: {
             "Content-Type": "application/json",
@@ -100,7 +94,7 @@ const Openings = () => {
           },
         }
       );
-  
+
       const data = response.data;
 
       // Combine the default and custom openings into one array
@@ -109,7 +103,7 @@ const Openings = () => {
       // Update the state with the fetched openings
       setOpenings(allOpenings);
     } catch (error) {
-      console.error('Failed to fetch openings:', error);
+      console.error("Failed to fetch openings:", error);
     }
   };
   const [selectedOpeningId, setSelectedOpeningId] = useState(null);
@@ -122,12 +116,14 @@ const Openings = () => {
   };
 
   const deleteOpening = async () => {
-    const confirmDelete = window.confirm("Sikker på at du vil slette åpeningen, det er umulig å få den tilbake");
-  
+    const confirmDelete = window.confirm(
+      "Sikker på at du vil slette åpeningen, det er umulig å få den tilbake"
+    );
+
     if (confirmDelete) {
       try {
         const response = await axios.delete(
-          process.env.REACT_APP_BACKEND_URL + "/openings/" + selectedOpeningId,
+          `${process.env.REACT_APP_BACKEND_URL}/openings/${selectedOpeningId}`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -135,11 +131,13 @@ const Openings = () => {
             },
           }
         );
-  
+
         // You might want to remove the deleted opening from your state here
         // so it disappears from the UI without needing to refresh the page
-        setOpenings(openings.filter(opening => opening._id !== selectedOpeningId));
-  
+        setOpenings(
+          openings.filter((opening) => opening._id !== selectedOpeningId)
+        );
+
         console.log("Sletting gjennomført:", response);
         setDataChanged(!dataChanged);
       } catch (error) {
@@ -150,78 +148,83 @@ const Openings = () => {
       console.log("Sletting kanselert.");
     }
   };
-  
+
   useEffect(() => {
     fetchOpenings();
   }, [dataChanged]);
 
   return (
     <OpeningsContext.Provider value={openings}>
-    <div className="Profilside-body">
-      <div className="profil-container">
-        <h1>Lag dine egne åpningstrekk</h1>
-        <div>
-          <label>
-            Navn på åpning:
-            <input
-              type="text"
-              value={opening.name}
-              onChange={(e) => setOpening({ ...opening, name: e.target.value })}
-            />
-          </label>
+      <div className="Profilside-body">
+        <div className="profil-container">
+          <h1>Lag dine egne åpningstrekk</h1>
+          <div>
+            <label>
+              Navn på åpning:
+              <input
+                type="text"
+                value={opening.name}
+                onChange={(e) =>
+                  setOpening({ ...opening, name: e.target.value })
+                }
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Trekk:
+              <input
+                type="text"
+                value={opening.moves}
+                placeholder="skriv på denne måten: e2e4, f2f4"
+                onChange={(e) =>
+                  setOpening({ ...opening, moves: e.target.value })
+                }
+              />
+            </label>
+          </div>
+          <div>
+            <label>
+              Forklaring:
+              <input
+                type="text"
+                value={opening.description}
+                onChange={(e) =>
+                  setOpening({ ...opening, description: e.target.value })
+                }
+              />
+            </label>
+          </div>
+          <div className="knapperOpe">
+            <div>
+              <button onClick={handleButtonClick}>Lagre åpninger</button>
+            </div>
+            <div>
+              <button onClick={patchOpenings}>Endre på Åpninger</button>
+            </div>
+            <div>
+              <button onClick={fetchOpenings}>Henter alle åpninger</button>
+            </div>
+            <div>
+              <button onClick={deleteOpening}>Slett Åpning</button>
+            </div>
+          </div>
+          <div className="Ope">
+            {openings.map((opening) => (
+              <div
+                key={opening._id}
+                onClick={() => handleOpeningClick(opening)}
+              >
+                <h2>{opening.name}</h2>
+                <p>{opening.moves}</p>
+                <p>{opening.description}</p>
+              </div>
+            ))}
+          </div>
         </div>
-        <div>
-          <label>
-            Trekk:
-            <input
-              type="text"
-              value={opening.moves}
-              placeholder="skriv på denne måten: e2e4, f2f4"
-              onChange={(e) => setOpening({ ...opening, moves: e.target.value })}
-            />
-          </label>
-        </div>
-        <div>
-          <label>
-            Forklaring:
-            <input
-              type="text"
-              value={opening.description}
-              onChange={(e) => setOpening({ ...opening, description: e.target.value })}
-            />
-          </label>
-        </div>
-        <div className="knapperOpe">
-        <div>
-          <button onClick={handleButtonClick}>Lagre åpninger</button>
-        </div>
-        <div>
-          <button onClick={patchOpenings}>Endre på Åpninger</button>
-        </div>
-        <div>
-          <button onClick={fetchOpenings}>Henter alle åpninger</button>
-        </div>
-        <div>
-          <button onClick={deleteOpening}>Slett Åpning</button>
-        </div>
-        </div>
-        <div className="Ope">
-  {openings.map((opening) => (
-    <div 
-      key={opening._id} 
-      onClick={() => handleOpeningClick(opening)}
-    >
-      <h2>{opening.name}</h2>
-      <p>{opening.moves}</p>
-      <p>{opening.description}</p>
-    </div>
-  ))}
-</div>
-
       </div>
-    </div>
     </OpeningsContext.Provider>
   );
-}
+};
 
 export default Openings;

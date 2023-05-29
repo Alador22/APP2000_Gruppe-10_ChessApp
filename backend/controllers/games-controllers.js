@@ -1,7 +1,7 @@
 const Game = require("../models/game");
 const createError = require("http-errors");
 
-// får alle kampene fra brukeren
+// får alle kampene fra brukere
 const getGames = async (req, res, next) => {
   const player1_id = req.userData.userId;
   let games;

@@ -11,14 +11,14 @@ const AdminPage = () => {
   const decodedToken = jwtDecode(token);
 
   useEffect(() => {
-     //setEmail();
+    //setEmail();
     setAdmin(decodedToken.admin);
   }, [decodedToken]);
 
   const handleAdminChange = async () => {
     try {
       const response = await axios.patch(
-        process.env.REACT_APP_BACKEND_URL + "/users/admin",
+        `${process.env.REACT_APP_BACKEND_URL}/users/admin`,
         {
           email: email,
         },
@@ -44,18 +44,18 @@ const AdminPage = () => {
 
   const handleDeleteKonto = async () => {
     try {
-        const response = await axios.delete(
-          process.env.REACT_APP_BACKEND_URL + "/users/admin",
-            {
-              data: {
-                email: email,
-              },
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: "Bearer " + token,
-              },
-            }
-          );
+      const response = await axios.delete(
+        `${process.env.REACT_APP_BACKEND_URL}/users/admin`,
+        {
+          data: {
+            email: email,
+          },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        }
+      );
 
       if (response.status === 200) {
         //sier ifra om konto ble slettet
@@ -71,7 +71,7 @@ const AdminPage = () => {
 
   return (
     <div className="Profilside-body">
-        <div className="profil-container">
+      <div className="profil-container">
         <div>
           <label>
             Epost:
@@ -88,9 +88,8 @@ const AdminPage = () => {
         <div>
           <button onClick={handleDeleteKonto}>Slett konto</button>
         </div>
-        </div>
       </div>
-    
+    </div>
   );
 };
 
