@@ -13,9 +13,9 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      const decodedToken = jwtDecode(token);
-      setAuthData(decodedToken);
-      setAdmin(decodedToken.admin); // Gjør at token blir admin om den har disse rettighetene fra før
+      //const decodedToken = jwtDecode(token);
+      setAuthData(token);
+      setAdmin(token.admin); // Gjør at token blir admin om den har disse rettighetene fra før
     }
   }, []);
 
