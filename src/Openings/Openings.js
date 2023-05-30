@@ -178,7 +178,7 @@ const Openings = () => {
             <input
               type="text"
               value={opening.moves}
-              placeholder="skriv på denne måten: e2e4, f2f4"
+              placeholder="skriv på denne måten: e2e4,e7e6"
               onChange={(e) => setOpening({ ...opening, moves: e.target.value })}
             />
           </label>
