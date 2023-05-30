@@ -9,7 +9,7 @@ import {
 } from "../shared/util/validators";
 import { AuthContext } from "../AuthContext";
 
-// Definerer tilstander login / registrering
+
 //creator Torjus Lundefaret Steinsrud
 // her har vi skrevet alle tildstandene vi trenger for login og registrering, så først på en LoginForm tutorial om hva som typisk skal være med (React User login and Authentication with Axios)
 // Definerer tilstander login / registrering 

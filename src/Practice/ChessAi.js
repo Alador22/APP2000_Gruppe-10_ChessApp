@@ -1,3 +1,5 @@
+// dette er gjort med chat gpt, prøvde i mange timer først å få til stockfish.js biblioteket selv, men har blitt utdatert, prøvd også 3 andre AI. 
+
 // Funksjon for å hente verdien til en sjakkbrikke
 const getPieceValue = (piece) => {
   if (!piece) return 0;
