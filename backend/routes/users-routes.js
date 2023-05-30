@@ -1,3 +1,4 @@
+//creator: alador tok de to første rutene fra udemy-kurset og bygget opp resten fra å se på express biblioteket
 const express = require("express");
 const { check } = require("express-validator");
 const tokenCheck = require("../middleware/token-auth");

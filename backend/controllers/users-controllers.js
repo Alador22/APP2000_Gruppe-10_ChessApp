@@ -1,3 +1,8 @@
+//creator: Alador
+/**const signup og const login er inspirert av udemy-kurset,
+ * men innholdet deres har blitt endret som feil håndteringen for alle filene i backned med alle passende statuskoder.
+ * Jeg skrev om loggiken til token med å bruke jsonwebtoken-biblioteket og User formatet i const user = new user.
+ * bycrpt-koden ble direkte kopiert fra kurset med kun endringer i feilhåndteringen. */
 const { validationResult } = require("express-validator");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
@@ -293,8 +298,6 @@ const adminDeleteUser = async (req, res, next) => {
   }
   res.status(200).json("kontoen har blitt slettet!");
 };
-
-//make an admin banning function and another function for forgot password
 exports.signup = signup;
 exports.login = login;
 exports.deleteUser = deleteUser;

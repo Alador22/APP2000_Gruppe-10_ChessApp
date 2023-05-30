@@ -1,3 +1,4 @@
+//creator: alador. skjelettet ble laget av chatgpt, så la jeg til rutene og token-sjekken
 const express = require("express");
 const tokenCheck = require("../middleware/token-auth");
 const gamesController = require("../controllers/games-controllers");

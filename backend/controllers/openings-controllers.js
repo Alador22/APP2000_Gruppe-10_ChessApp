@@ -1,3 +1,11 @@
+//creator: alador
+/**
+ *  strukturen ligner på user controllers fordi jeg prøvde å gjenbruke det meste av logikken derfra til denne filen.
+ *  Jeg hadde en gammel funksjon som hentet alle brukerne fra databasen som jeg tok fra udemy-kurset  jeg endret det til
+ *  const getOpenings av endre innholdet fullstendig, men logikken er lik. const signup ble createOpenings
+ *  ved å endre logikken for validering og opprettelse av dokumentet.
+ *  jeg gjorde lignende ting med de andre ved å bruke deleteuser for å lage deleteOpeing
+ */
 const { validationResult } = require("express-validator");
 const Opening = require("../models/opening");
 const createError = require("http-errors");
@@ -102,7 +110,7 @@ const updateOpening = async (req, res, next) => {
     );
     return next(error);
   }
-
+  //
   opening.name = name;
   opening.moves = moves;
   opening.description = description;

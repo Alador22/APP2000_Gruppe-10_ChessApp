@@ -1,3 +1,4 @@
+//creator: alador brukte koden fra user-routes og express biblioteket for å lage denne filen
 const express = require("express");
 const { check } = require("express-validator");
 const tokenCheck = require("../middleware/token-auth");

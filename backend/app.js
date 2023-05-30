@@ -1,3 +1,4 @@
+//creator: alador brukte udemy-kurset som er referert i rapporten for denne siden og bygget opp fra det ved å legge til flere ruter og biblioteker
 //hovedbibliotekene som brukes på backend
 const express = require("express");
 const bodyParser = require("body-parser");

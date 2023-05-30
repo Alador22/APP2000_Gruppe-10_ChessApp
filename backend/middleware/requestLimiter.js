@@ -1,3 +1,4 @@
+//creator: alador brukte express rate limit biblioteket og laget disse funksjonene som er som eksportert og brukt i app.js-filen
 const rateLimit = require("express-rate-limit");
 //vi brukte express rate limit for å begrense mengden forespørsler sendt av en enkelt bruker for å forhindre utilsiktede høyfrekvent forespørsler fra brukere
 const userInteractionLimiter = rateLimit({

@@ -1,3 +1,4 @@
+//creator:alador brukte udemy-kurs mongoose skjemaet som inspirasjon og deretter mongoose-biblioteket til å endre slik at det kan fungere på systemet vårt med validering
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
