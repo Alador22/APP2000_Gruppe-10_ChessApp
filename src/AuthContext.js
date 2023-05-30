@@ -8,13 +8,13 @@ export const AuthProvider = ({ children }) => {
   const [admin, setAdmin] = useState(false);
 
   // Laget av Jørgen og ChatGPT
-  // Decoder JWT og henter ut informasjon
+  // Decoder JWT og henter ut informasjond
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
       const decodedToken = jwtDecode(token);
       setAuthData(decodedToken);
-      setAdmin(decodedToken.admin); // Gjør at token blir admin om den har disse rettighetene fra før *
+      setAdmin(decodedToken.admin); // Gjør at token blir admin om den har disse rettighetene fra før
     }
   }, []);
 
