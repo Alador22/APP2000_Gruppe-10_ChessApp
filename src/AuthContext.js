@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       const decodedToken = jwtDecode(token);
       setAuthData(decodedToken);
-      setAdmin(decodedToken.admin); // Gjør at token blir admin om den har disse rettighetene fra før
+      setAdmin(decodedToken.admin); // Gjør at token blir admin om den har disse rettighetene fra før *
     }
   }, []);
 
