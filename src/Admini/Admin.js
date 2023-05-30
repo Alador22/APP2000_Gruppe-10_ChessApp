@@ -8,7 +8,7 @@ const AdminPage = () => {
   const [admin, setAdmin] = useState("");
 
   const token = localStorage.getItem("token");
-  const decodedToken = jwtDecode(token);
+   const decodedToken = jwtDecode(token);
 
   useEffect(() => {
      //setEmail();

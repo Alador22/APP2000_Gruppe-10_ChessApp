@@ -1,3 +1,4 @@
+/*creator: perry stendal og jørgen tinnesand combinert*/
 .Profilside-body {
     /*Bakgrunn på profilsiden*/
     background: linear-gradient(to bottom, #547263, #020305);
@@ -53,3 +54,49 @@
   .profil-container button:hover {
     background: #020305;
   }
+  .Ope {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    background-color: #588870;
+  }
+  
+  .Ope div {
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+    flex-basis: calc(25% - 20px);
+    box-sizing: border-box;
+    color: #000000;
+  }
+  .Ope div:hover {
+    
+    background-color: #c4fcd6; 
+  }
+  .knapperOpe {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; 
+  }
+  
+  .knapperOpe div {
+    margin: 10px; 
+  }
+  
+
+  .knapperOpe button {
+    padding: 10px 20px; 
+    border: 2px solid #000; 
+    margin: 10px; 
+    border-radius: 5px; 
+    background-color: #fff; 
+    color: #000; 
+    font-size: 16px; 
+    cursor: pointer; 
+  }
+  
+  .knapperOpe button:hover {
+    background-color: #000; 
+    color: #fff; 
+  }
+  

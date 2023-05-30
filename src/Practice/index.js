@@ -3,7 +3,7 @@ import Chessboard from 'chessboardjsx';
 import { Chess } from 'chess.js';
 import './style2.css';
 import { calculateBestMove } from './ChessAi';
-import Openings from './Openings';
+import Openings from './SideOpenings';
 
 //creator Torjus Lundefaret Steinsrud, Jeg startet med å lage selve divs å hente ut sjakkbrettet og sjakkbrikker, etter det ble noe stopp siden reglene fungerte ikke som det skulle, så la jeg det inn til slutt i chat gpt 
 //slik at chat gpt tilpasse slik at Regler skulle passe og fungere. 

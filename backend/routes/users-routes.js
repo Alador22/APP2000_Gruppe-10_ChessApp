@@ -25,7 +25,7 @@ router.post(
   ],
   usersController.login
 );
-
+//Route for å bytte password
 router.patch(
   "/profile",
   [
@@ -44,12 +44,15 @@ router.delete(
   usersController.deleteUser
 );
 
+//admin route for å gi admin rolle
 router.patch(
   "/admin",
   check("email").normalizeEmail().isEmail(),
   tokenCheck.checkToken,
   usersController.updateAdminRole
 );
+
+//admin route for å slette bruker
 router.delete(
   "/admin",
   check("email").normalizeEmail().isEmail(),

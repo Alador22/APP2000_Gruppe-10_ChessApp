@@ -1,101 +1,98 @@
-const { validationResult } = require("express-validator");
-const HttpError = require("../models/http-error");
 const Game = require("../models/game");
+const createError = require("http-errors");
 
-// Get all games
+// får alle kampene fra brukeren
 const getGames = async (req, res, next) => {
+  const player1_id = req.userData.userId;
   let games;
   try {
-    games = await Game.find().exec();
+    games = await Game.find({ player1_id: player1_id });
   } catch (err) {
-    const error = new HttpError(
-      "Fetching games failed, please try again later.",
-      500
+    const error = createError(
+      500,
+      "kunne ikke hente spill, vennligst prøv igjen senere."
     );
     return next(error);
   }
   res.json({ games: games.map((game) => game.toObject({ getters: true })) });
 };
-//get all games by user_id
 
-// Start a new game
+// opprette en ny kamp mot AI i databasen
 const startGame = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return next(
-      new HttpError("Invalid inputs passed, please check your data.", 422)
-    );
-  }
-
-  const { player1_id, player2_id, start_time } = req.body;
-
   const newGame = new Game({
-    player1_id,
-    player2_id,
-    start_time,
+    player1_id: req.userData.userId,
+    player2_id: "6470f4fa49f2b2b868b3dc06", //opprettet en bruker for AI
+    start_time: new Date(),
     moves: [],
   });
 
   try {
     await newGame.save();
   } catch (err) {
-    const error = new HttpError("Creating game failed, please try again.", 500);
+    const error = createError(
+      500,
+      "kunne ikke opprette en kamp, vennligst prøv på nytt."
+    );
     return next(error);
   }
 
-  res.status(201).json({ game: newGame });
+  res.status(201).json({ game: newGame.toObject({ getters: true }) });
 };
-// Update a game by its id
+
+//oppdaterer statusen for spillet som nye trekk eller resultatet
 const updateGame = async (req, res, next) => {
   const gameId = req.params.gid;
 
-  const { moves, end_time, result } = req.body;
+  const { moves, result } = req.body;
 
   let game;
   try {
     game = await Game.findById(gameId);
   } catch (err) {
-    const error = new HttpError(
-      "Something went wrong, could not find the game.",
-      500
-    );
+    const error = createError(500, "Noe gikk galt, kunne ikke finne spillet.");
     return next(error);
   }
 
   if (!game) {
-    const error = new HttpError(
-      "Could not find a game with the provided ID.",
-      404
+    const error = createError(
+      404,
+      "Kunne ikke finne et spill med oppgitt spill ID."
     );
     return next(error);
   }
 
-  // Update moves, end_time and result
   if (moves) {
-    // Validate moves, e.g., ensure player_id, from, and to fields are present for each move
+    const player = req.userData.userId;
+    const computer = "6470f4fa49f2b2b868b3dc06";
+
+    moves.forEach((move) => {
+      if (move.player_id === "computer") {
+        move.player_id = computer;
+      } else {
+        move.player_id = player;
+      }
+    });
+
     const validMoves = moves.every(
       (move) => move.player_id && move.from && move.to
     );
 
     if (!validMoves) {
-      const error = new HttpError("Invalid move data provided.", 422);
+      const error = createError(422, "Ugyldige inndata, vennligst prøv igjen.");
       return next(error);
     }
 
-    // Append new moves to the existing moves array
     game.moves.push(...moves);
   }
-  if (end_time) {
-    game.end_time = end_time;
-  }
   if (result) {
+    game.end_time = new Date();
     game.result = result;
   }
 
   try {
     await game.save();
   } catch (err) {
-    const error = new HttpError("Updating game failed, please try again.", 500);
+    const error = createError(500, "kunne ikke oppdatere kampen, prøv igjen.");
     return next(error);
   }
 

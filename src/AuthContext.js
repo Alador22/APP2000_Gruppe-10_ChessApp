@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect } from 'react';
-import jwtDecode from 'jwt-decode';
+import React, { createContext, useState, useEffect } from "react";
+import jwtDecode from "jwt-decode";
 
 export const AuthContext = createContext();
 
@@ -7,9 +7,10 @@ export const AuthProvider = ({ children }) => {
   const [authData, setAuthData] = useState(null);
   const [admin, setAdmin] = useState(false);
 
-  // Decoder JWT og henter ut informasjon
+  // Laget av Jørgen og ChatGPT
+  // Decoder JWT og henter ut informasjond
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       const decodedToken = jwtDecode(token);
       setAuthData(decodedToken);
