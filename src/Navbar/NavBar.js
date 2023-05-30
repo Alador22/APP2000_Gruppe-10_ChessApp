@@ -5,6 +5,8 @@ import DropdownMeny from "./dropdownmeny"
 import { AuthContext } from "../AuthContext";
 import jwtDecode from "jwt-decode";
 
+//fulgt tutorials for å lage navbar(kilde https://www.youtube.com/watch?v=SLfhMt5OUPI).
+
 function Navbar({ isLoggedIn, setIsLoggedIn }) {
 
   const token = localStorage.getItem("token");
