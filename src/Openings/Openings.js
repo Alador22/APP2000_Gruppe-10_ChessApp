@@ -16,7 +16,9 @@ const Openings = () => {
   const token = localStorage.getItem("token");
   const [dataChanged, setDataChanged] = useState(false);
 
- //
+ //perry stendal lagde valideringen, resten av koden endre vi med å bruke for det meste jørgen sin kode, prøvde å løse problemet samtidig.
+ // her brukte jeg en kombinasjon av meg selv, emne stoffet og chat gpt for å komme fram til slutt produktet.
+ //chat gpt, ble brukt til å fin pusse og komme med forslag utifra feil meldinger
 // godkjenner at strukturen/moves som blir prøvd å lagret er skrever på riktig måte
   const validateMoves = (moves) => {
     const movePattern = /^[a-h][1-8][a-h][1-8]$/;
