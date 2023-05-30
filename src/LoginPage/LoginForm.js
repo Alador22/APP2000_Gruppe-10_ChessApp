@@ -5,9 +5,9 @@ import "./LoginForm.css";
 import { useNavigate } from "react-router-dom";
 import { VALIDATOR_EMAIL, VALIDATOR_MINLENGTH } from "../shared/util/validators";
 import { AuthContext } from "../AuthContext";
-
-
-// Definerer tilstander login / registrering
+//creator Torjus Lundefaret Steinsrud
+// her har vi skrevet alle tildstandene vi trenger for login og registrering, så først på en LoginForm tutorial om hva som typisk skal være med (React User login and Authentication with Axios)
+// Definerer tilstander login / registrering 
 const LoginForm = ({ onLogin }) => {
   const {setAuthData} = useContext(AuthContext);
   const [name, setName] = useState("");
@@ -18,8 +18,8 @@ const LoginForm = ({ onLogin }) => {
   const [registrationSuccessful, setRegistrationSuccessful] = useState(false);
   const navigate = useNavigate();
 
-
-  // Funksjon for å sende innloggingen
+  // her følgte jeg også en tutorial med endringer av meg selv for å passe backend. (kilde i rapport: React User login and Authentication with Axios).
+  // Funksjon for å sende innloggingen 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -46,7 +46,7 @@ const LoginForm = ({ onLogin }) => {
     }
   };
 
-
+  // her så kopierte vi koden fra koden over. Byttet inn backend url slik at det passer, la inn også navn, også med error meldinger om brukeren registrer blankt.
   // Funksjon for å sende registreringen
   const handleRegisterSubmit = async (event) => {
     event.preventDefault();
@@ -68,6 +68,7 @@ const LoginForm = ({ onLogin }) => {
           },
         }
       );
+      
      // Etter du har registrert deg så lagres JWT lokalt
     localStorage.setItem("token", response.data.token);
 
@@ -91,7 +92,10 @@ const LoginForm = ({ onLogin }) => {
     setErrorMessage("");
   };
 
+  // loginformet, registerformet, her så jeg først på fler youtube tutorials (referanse: https://www.youtube.com/watch?v=Y-XW9m8qOis) om forskjellige typer. Så på hovedstruktur å begynte å lage divs, form, label og input, knappene. 
+  // Deretter puttet jeg hele login og register form i ChatGpt for å få med alt av nødvendigheter slik at den endret litt struktur å la til ting som manglet.  
   // Returnerer det faktiske skjemaet med input-felt, knapper og validering
+
   return (
     <div className="container">
       <form

@@ -17,9 +17,12 @@ const FindMatches = () => {
       <div>
         <h2>Available matches:</h2>
         <ul>
-          <li>John Doe (Intermediate)</li>
-          <li>Jane Smith (Advanced)</li>
-          <li>Bob Johnson (Beginner)</li>
+          <li>Torjus (Intermediate)</li>
+          <li>Alador (Advanced)</li>
+          <li>Perry (Beginner)</li>
+          <li>Abdi (Intermediate)</li>
+          <li>Jorgen (Advanced)</li>
+          <li>Preben (Beginner)</li>
         </ul>
       </div>
     </div>

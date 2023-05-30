@@ -11,6 +11,7 @@ import { AuthProvider } from "./AuthContext";
 import AdminPage from "./Admini/Admin";
 import Openings from "./Openings/Openings";
 
+// følgt tutorials for å håndtering av routing mellom sidene (referanse:https://www.youtube.com/watch?v=TWz4TjSssbg) 
 
 function App() {
 // State-variabel for påloggingstilstand og dens oppdateringsfunksjon
@@ -20,7 +21,6 @@ const [isLoggedIn, setIsLoggedIn] = useState(false);
 const handleLoginState = (state) => {
 setIsLoggedIn(state);
 };
-
 
 return (
   <AuthProvider>

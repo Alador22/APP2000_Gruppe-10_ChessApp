@@ -5,6 +5,10 @@ import './style2.css';
 import { calculateBestMove } from './ChessAi';
 import Openings from './Openings';
 
+//creator Torjus Lundefaret Steinsrud, Jeg startet med å lage selve divs å hente ut sjakkbrettet og sjakkbrikker, etter det ble noe stopp siden reglene fungerte ikke som det skulle, så la jeg det inn til slutt i chat gpt 
+//slik at chat gpt tilpasse slik at Regler skulle passe og fungere. 
+// øving sin index.js, Mesteparten av koden laget av ChatGpt, men også sett på sjakk biblotekene for å hente informasjon som chatGpt har gitt beskrivelse, tilpasset, feilsøket og endret og lagt inn.
+// Alle tilstandene for øving. 
 const Practice = () => {
   const [chess] = useState(new Chess());
   const [position, setPosition] = useState(null);
@@ -17,6 +21,7 @@ const Practice = () => {
   const [blackMoves, setBlackMoves] = useState([]);
   const [showOpenings, setShowOpenings] = useState(false);
 
+// Her har chatGpt laget kode for AI skal gjrøe beste trekk.
 
   useEffect(() => {
     const makeBestMove = () => {  // Funksjon som gjør AI-trekk
@@ -39,6 +44,8 @@ const Practice = () => {
     // eslint-disable-next-line
   }, [position, chess]);  
 
+  // her har chatGpt lagt inn noe som manglet, å for å feilsøke etter en feil. SetCheckmateMessage(message) sin funksjon er å bare få teksten inn i meldingsboksen, ikke selve sjakkmatt melding.
+
   // Funksjon for å vise en melding og fjerne den etter 4 sekunder
   const showMessage = (message) => {
     setCheckmateMessage(message);
@@ -50,6 +57,8 @@ const Practice = () => {
     );
   };
 
+    // brukt api, chat gpt 
+
     // Funksjon for å håndtere en spillers trekk
     const handleMove = ({ sourceSquare, targetSquare }) => {
     // Hent alle mulige trekk for gjeldende spiller
@@ -60,6 +69,9 @@ const Practice = () => {
     if (move === undefined) {
       return;
     }
+
+    // api, chat gpt, meg selv 
+
     // Utfør trekket i spillet
     chess.move(move);
     // Sett posisjonen til den nye spilltilstanden
@@ -78,6 +90,8 @@ const Practice = () => {
       setBlackMoves([...blackMoves, move]);
     }
   };
+
+   // chat gpt kode.
    // Funksjon for å håndtere når en rute på brettet klikkes på
   const handleSquareClick = (square) => {
     const piece = chess.get(square);
@@ -104,7 +118,9 @@ const Practice = () => {
     setMessageBoxClass('message-box');
     chess.reset();
   };
-  // divs med sjakkbord, trekklisten osv.
+
+  // laget først divsa, følgte tutorial for chessboard,jsx og sjakk,js apiet som chatGPT har gjort endringer og lagt inn slik at det passer til prosjektet.
+  // divs med sjakkbord, trekklisten og åpninger og brikkene.
   return (
     <div className="practice-body">
       <div className="main-container">
